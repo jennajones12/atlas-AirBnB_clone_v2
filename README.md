@@ -13,21 +13,20 @@
 <center> <h1>Installation</h1> </center>
 To install and run this project locally, follow these steps:
 
-### 1. Clone the repository:
+#### 1. Clone the repository:
 ```
 git clone https://github.com/yourusername/airbnb-clone.git
 ```
-### 2. Start the Console:
+#### 2. Start the Console:
 ```
 $ ./console.py
 ```
-### 3. When this command is run, the following prompt should appear:
+#### 3. When this command is run, the following prompt should appear:
 ```
 (hbnb)
 ```
  This prompt designates you are in the "HBnB" console. 
-    
-    There are a variety of commands available within the console program.
+There are a variety of commands available within the console program.
 
 <center> <h1>Usage</h1> </center>
 
