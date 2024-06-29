@@ -47,11 +47,11 @@ create <class_name>
 ```
 #### 2. Destroy an Object
 ##### Destroys an object based on class and UUID.
-* **Example:**
+**Example:**
 ```
 (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
 ```
-###### Usage: destroy <class_name> <_id>
+###### * Usage: destroy <class_name> <_id>
 #### 3. Show an Object 
 ##### Shows an object based on class and UUID.
 ###### Usage: show <class_name> <_id>    
