@@ -25,14 +25,13 @@ $ ./console.py
 ```
 (hbnb)
 ```
-*   This prompt designates you are in the "HBnB" console. 
+*  * This prompt designates you are in the "HBnB" console. 
+    
     There are a variety of commands available within the console program.
 
 <center> <h1>Usage</h1> </center>
 
-### Commands
-
-### Primary Syntax
+### Primary Syntax Commands
 ---
 #### 1. Create 
 ###### Creates an instance based on a given class.
@@ -65,7 +64,7 @@ create <class_name>
 (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
 ```
 
-### Alternative Syntax
+### Alternative Syntax Commands
 
 #### 1. Show All 
 ##### Shows all objects the program has access to, or all objects of a given class.
