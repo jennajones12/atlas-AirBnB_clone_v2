@@ -5,7 +5,7 @@ This project is a clone of the AirBnB website, developed as part of a student pr
 
 ---
 
-<center><h3>Repository Contents</h3> </center>
+<center><h2>Repository Contents</h2> </center>
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -13,29 +13,29 @@ This project is a clone of the AirBnB website, developed as part of a student pr
 - [License](#license)
 - [Authors](#authors)
 
-<center> <h2>Installation</h2> </center>
+<center> <h1>Installation</h1> </center>
 
-## To install and run this project locally, follow these steps:
-1. Clone the repository:
+### To install and run this project locally, follow these steps:
+#### 1. Clone the repository:
 ```
 git clone https://github.com/yourusername/airbnb-clone.git
 ```
-2. Starting the Console:
+#### 2. Start the Console:
 ```
 $ ./console.py
 ```
-3. When this command is run the following prompt should appear:
+#### 3. When this command is run, the following prompt should appear:
 ```
 (hbnb)
 ```
-*This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.*
+##### *This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.*
 ---
 
-<center> <h2>Usage</h2> </center>
+<center> <h1>Usage</h1> </center>
 
 ## Commands
 
-### Primary Command Syntax
+### Primary Syntax
 
 #### 1. Create 
 ###### Creates an instance based on a given class.
