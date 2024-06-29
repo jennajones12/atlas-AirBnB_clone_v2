@@ -52,7 +52,7 @@ To start the console, run:
     ```
     (hbnb) User.all
     ```
-* **update** - Updates existing attributes of an object based on class name and UUID
+* **update** - Updates existing attributes of an object based on class name and UUID.
     ```
     (hbnb) update <ClassName> <id> <attribute_name>=<attribute_value>
     ```
