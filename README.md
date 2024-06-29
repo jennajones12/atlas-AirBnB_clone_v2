@@ -28,60 +28,45 @@ $ ./console.py
  This prompt designates you are in the "HBnB" console. 
 There are a variety of commands available within the console program.
 
-#Usage
+# Usage
 
-##Primary Syntax Commands
+## Primary Syntax Commands
 ---
-### **1. Create** - creates an instance based on a given class.  
-#### *create <class_name>*
-#### **Example:** 
-```
-(hbnb) create BaseModel
-```
-#### 2. Destroy
--- *destroys an object based on class and UUID.*
-##### Usage: destroy <class_name> <_id>
-###### Example:
-```
-(hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-```
+### **Create -** creates an instance based on a given class.  
+'*create <class_name>*'
+#### Example:
+    create BaseModel
 
-#### 3. Show an Object 
-##### Shows an object based on class and UUID.
-###### Usage: show <class_name> <_id>    
-```
-(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-```
-#### 4. Update an Object   
-##### Updates existing attributes of an object based on class name and UUID.
-###### Usage: update <class_name> <_id>    
-```
-(hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
-```
+### **Destroy -** destroys an object based on class and UUID.
+'*destroy <class_name> <_id>*'
+#### Example:
+    (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
+
+### **Show -** shows an object based on class and UUID.
+'*show <class_name> <_id>*'
+#### Example:
+    (hbnb) show BaseModel 3aa5babc-efb6-4041#### Example:
+    (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
 
 ## Alternative Syntax Commands
+---
+### **All -** shows all objects the program has access to, or all objects of a given class.
+'*<class_name>.all()*'       
+#### Example:
+    (hbnb) User.all()
 
-#### 1. Show All 
-##### Shows all objects the program has access to, or all objects of a given class.
-###### Usage:  <class_name>.all()        
-```
-(hbnb) User.all()
-```
-#### 2. Destroy a User 
-##### Destroys a user object based on its class name and ID.
-###### Usage: <class_name>.destroy(<_id>)        
-```
-(hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
-```
-#### 3. Update User (by attribute)
-##### Updates attributes of a user object based on its class name, ID, attribute name, and new attribute value.
-###### Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)        
-```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
-```
-#### 4. Update User (by dictionary) 
-##### Updates attributes of a user object based on its class name, ID, and a dictionary representation of attributes.
-###### Usage: <class_name>.update(<_id>, <dictionary>)        
-```
-(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
-```
+### **Destroy -** destroys a user object based on its class name and ID.
+'*<class_name>.destroy(<_id>)*'       
+#### Example:
+    (hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
+
+### **Update (by attribute) -** updates attributes of a user object based on its class name, ID, attribute name, and new attribute value.
+'*<class_name>.update(<_id>, <attribute_name>, <attribute_value>)*'        
+#### Example:
+    (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
+
+### **Update (by dictionary) -**
+updates attributes of a user object based on its class name, ID, and a dictionary representation of attributes.
+'*<class_name>.update(<_id>, <dictionary>)*'       
+#### Example:
+    (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
