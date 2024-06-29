@@ -8,34 +8,36 @@ This project is a clone of the AirBnB website, developed as part of a student pr
 <center><h3>Repository Contents</h3> </center>
 
 - [Installation](#installation)
-- [Commands](#commands)
+- [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 - [Authors](#authors)
 
-## Installation
-To install and run this project locally, follow these steps:
+<center> <h2>Installation</h2> </center>
+
+## To install and run this project locally, follow these steps:
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/airbnb-clone.git
-    ```
-2. Install the required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-## Commands
-
-### Starting the Console
-To start the console, run:
-```bash
-./console.py
 ```
+git clone https://github.com/yourusername/airbnb-clone.git
+```
+2. Starting the Console:
+```
+$ ./console.py
+```
+3. When this command is run the following prompt should appear:
+```
+(hbnb)
+```
+*This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.*
+---
 
-## Examples
+<center> <h2>Usage</h2> </center>
+
+## Commands
 
 ### Primary Command Syntax
 
-#### 1. Create an Object 
+#### 1. Create 
 ###### Creates an instance based on a given class.
 
 ##### **Usage:**
@@ -45,7 +47,8 @@ create <class_name>
 ```
 (hbnb) create BaseModel
 ```
-#### 2. Destroy an Object - *destroys an object based on class and UUID.*
+#### 2. Destroy
+*destroys an object based on class and UUID.*
 ##### Usage: destroy <class_name> <_id>
 ###### Example:
 ```
