@@ -5,9 +5,9 @@ This project is a clone of the AirBnB website, developed as part of a student pr
 
 ---
 
-<center><h3>Repository Contents</h3> </center>- 
+<center><h3>Repository Contents</h3> </center>
 
-[Installation](#installation)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -30,18 +30,18 @@ To install and run this project locally, follow these steps:
 To start the console, run:
 ```bash
 ./console.py
+```
 
-<br
-<br>
-<center> <h2>Examples</h2> </center>
-<h3>Primary Command Syntax</h3>
+## Examples
 
-###### * **create** - Creates an instance based on a given class.
+### Primary Command Syntax
+
+* **create** - Creates an instance based on a given class.
 Usage: create <class_name>
   ```
   (hbnb) create BaseModel
   ```
-###### * **destroy** - Destroys an object based on class and UUID.
+* **destroy** - Destroys an object based on class and UUID.
 Usage: destroy <class_name> <_id>
 ```
 (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
@@ -49,49 +49,41 @@ Usage: destroy <class_name> <_id>
 * **show** - Shows an object based on class and UUID.
 ```bash
 (hbnb) show <ClassName> <id>
-````
+```
 * **all** - Shows all objects the program has access to, or all objects of a given class.
 ```bash
 (hbnb) User.all
-````
-
+```
 * **update** - Updates existing attributes of an object based on class name and UUID
 ```bash
 (hbnb) update <ClassName> <id> <attribute_name>=<attribute_value>
-````
-
+```
 * **quit**  - Exits the program (EOF will as well).
 ```bash
 (hbnb) quit
-````
-
+```
 * **EOF** - Exits the program by reaching end-of-file.
 ```bash
 (hbnb) EOF
-````
-
+```
 * **count** - Counts the number of instances of a class.
 ```bash
 (hbnb) count <ClassName>
-````
-
+```
 * **help**- Provides a description of commands.
 ```bash
 (hbnb) help [<command>]
-````
-
+```
 * **update** (alternate syntax) - Updates existing attributes of an object using a dictionary representation.
 ```bash
 (hbnb) update <ClassName> <id> <attribute_name> <attribute_value>
 (hbnb) update <ClassName> <id> <dictionary_representation>
-````
-
+```
 * **shell** - Starts an interactive Python shell.
 ```bash
 (hbnb) shell
-````
-
+```
 * **reset** - Resets the database.
 ```bash
 (hbnb) reset
-````
+```
