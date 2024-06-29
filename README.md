@@ -25,7 +25,8 @@ $ ./console.py
 ```
 (hbnb)
 ```
-* **This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.**
+*   **This prompt designates you are in the "HBnB" console. 
+    There are a variety of commands available within the console program.**
 
 <center> <h1>Usage</h1> </center>
 
