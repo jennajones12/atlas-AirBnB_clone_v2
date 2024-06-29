@@ -47,6 +47,11 @@ There are a variety of commands available within the console program.
     (hbnb) show BaseModel 3aa5babc-efb6-4041#### Example:
     (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
 
+### **Update -** updates existing attributes of an object based on class name and UUID.
+'*update <class_name> <_id>*'
+#### Example:
+    (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
+
 ## Alternative Syntax Commands
 ---
 ### **All -** shows all objects the program has access to, or all objects of a given class.
