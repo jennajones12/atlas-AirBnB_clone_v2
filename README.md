@@ -37,53 +37,46 @@ To start the console, run:
 ### Primary Command Syntax
 
 * **create** - Creates an instance based on a given class.
-Usage: create <class_name>
-  ```
+    ```
   (hbnb) create BaseModel
   ```
 * **destroy** - Destroys an object based on class and UUID.
-Usage: destroy <class_name> <_id>
-```
-(hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
-```
+    ```
+    (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
+    ```
 * **show** - Shows an object based on class and UUID.
-```bash
-(hbnb) show <ClassName> <id>
-```
+    ```
+    (hbnb) show <ClassName> <id>
+    ```
 * **all** - Shows all objects the program has access to, or all objects of a given class.
-```bash
-(hbnb) User.all
-```
+    ```
+    (hbnb) User.all
+    ```
 * **update** - Updates existing attributes of an object based on class name and UUID
-```bash
-(hbnb) update <ClassName> <id> <attribute_name>=<attribute_value>
-```
+    ```
+    (hbnb) update <ClassName> <id> <attribute_name>=<attribute_value>
+    ```
 * **quit**  - Exits the program (EOF will as well).
-```bash
-(hbnb) quit
-```
+    ```
+    (hbnb) quit
+    ```
 * **EOF** - Exits the program by reaching end-of-file.
-```bash
-(hbnb) EOF
-```
+    ```
+    (hbnb) EOF
+    ```
 * **count** - Counts the number of instances of a class.
-```bash
-(hbnb) count <ClassName>
-```
+    ```
+    (hbnb) count <ClassName>
+    ```
 * **help**- Provides a description of commands.
-```bash
-(hbnb) help [<command>]
-```
-* **update** (alternate syntax) - Updates existing attributes of an object using a dictionary representation.
-```bash
-(hbnb) update <ClassName> <id> <attribute_name> <attribute_value>
-(hbnb) update <ClassName> <id> <dictionary_representation>
-```
+    ```
+    (hbnb) help [<command>]
+    ```
 * **shell** - Starts an interactive Python shell.
-```bash
-(hbnb) shell
-```
+    ```
+    (hbnb) shell
+    ```
 * **reset** - Resets the database.
-```bash
-(hbnb) reset
-```
+    ```
+    (hbnb) reset
+    ```
