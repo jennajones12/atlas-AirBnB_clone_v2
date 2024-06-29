@@ -10,7 +10,7 @@ This project is a clone of the AirBnB website, developed as part of a student pr
 - [License](#license)
 - [Authors](#authors)
 
-<center> <h2>Installation</h2> </center>
+<center><h1>Installation</h1> </center>
 To install and run this project locally, follow these steps:
 
 #### 1. Clone the repository:
@@ -28,7 +28,7 @@ $ ./console.py
  This prompt designates you are in the "HBnB" console. 
 There are a variety of commands available within the console program.
 
-<center> <h2>Usage</h2> </center>
+<center><h1>Usage</h1> </center>
 
 ## Primary Syntax Commands
 ### 1. Create 
