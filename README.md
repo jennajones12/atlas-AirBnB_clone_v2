@@ -1,10 +1,7 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-## Project Description
-This project is a clone of the AirBnB website, developed as part of a student project to understand backend interfaces, data management, and persistent storage using JSON serialization/deserialization.
-
+## This project is a clone of the AirBnB website, developed as part of a student project to understand backend interfaces, data management, and persistent storage using JSON serialization/deserialization.
 ---
-
 <center><h2>Repository Contents</h2> </center>
 
 - [Installation](#installation)
@@ -28,7 +25,7 @@ $ ./console.py
 ```
 (hbnb)
 ```
-##### *This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.*
+##### * ***This prompt designates you are in the "HBnB" console. There are a variety of commands available within the console program.***
 ---
 
 <center> <h1>Usage</h1> </center>
