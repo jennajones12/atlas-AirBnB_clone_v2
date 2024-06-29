@@ -51,7 +51,7 @@ Destroys an object based on class and UUID.
 ```
 (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
 ```
-###### + Usage: destroy <class_name> <_id>
+###### * **Usage: destroy <class_name> <_id>**
 
 #### 3. Show an Object 
 ##### Shows an object based on class and UUID.
