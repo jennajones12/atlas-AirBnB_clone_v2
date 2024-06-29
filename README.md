@@ -1,7 +1,7 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-## This project is a clone of the AirBnB website, developed as part of a student project to understand backend interfaces, data management, and persistent storage using JSON serialization/deserialization.
----
+## This project is a clone of the AirBnB website, developed as part of a student project to understand backend interfaces, data management, and persistent storage using JSON serialization/deserialization. 
+
 <center><h2>Repository Contents</h2> </center>
 
 - [Installation](#installation)
