@@ -32,7 +32,8 @@ There are a variety of commands available within the console program.
 
 ## Primary Syntax Commands
 ### **1. Create** - creates an instance based on a given class.  
-#### **Usage:** *create <class_name>*
+#### **Usage:** 
+*create <class_name>*
 ###### **Example:** 
 ```
 (hbnb) create BaseModel
