@@ -35,25 +35,25 @@ To start the console, run:
 
 ### Primary Command Syntax
 
-#### 1. Show an object
-#####  Creates an instance based on a given class.
+#### 1. Create an Object
+##### Creates an instance based on a given class.
 ###### Usage: create <class_name>   
 ```
 (hbnb) create BaseModel
 ```
-#### 2. Destroy an object
+#### 2. Destroy an Object
 ##### Destroys an object based on class and UUID.
 ###### Usage: destroy <class_name> <_id>     
 ```
 (hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
 ```
-#### 3. Show an object 
+#### 3. Show an Object 
 ##### Shows an object based on class and UUID.
 ###### Usage: show <class_name> <_id>    
 ```
 (hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
 ```
-#### 4. Update an object   
+#### 4. Update an Object   
 ##### Updates existing attributes of an object based on class name and UUID.
 ###### Usage: update <class_name> <_id>    
 ```
