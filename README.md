@@ -37,7 +37,8 @@ To start the console, run:
 
 #### 1. Create an Object
 ##### Creates an instance based on a given class.
-###### Usage: create <class_name>   
+###### Usage: create <class_name>
+* Example:   
 ```
 (hbnb) create BaseModel
 ```
