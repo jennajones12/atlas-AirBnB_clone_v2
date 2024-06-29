@@ -57,7 +57,32 @@ To start the console, run:
 * Usage: update <class_name> <_id>
     
     ```
-   (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
+    (hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
     ```
 
     ### Alternative Syntax
+
+    1. **show all** - Shows all objects the program has access to, or all objects of a given class.
+    * Usage:  <class_name>.all()
+        
+        ```
+        (hbnb) User.all()
+        ```
+    2. **destroy a user** - Destroys a user object based on its class name and ID.
+    * Usage: <class_name>.destroy(<_id>)
+        
+        ```
+        (hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
+        ```
+    3. **update user (by attribute)** - Updates attributes of a user object based on its class name, ID, attribute name, and new attribute value.
+    * Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)
+        
+        ```
+        (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
+        ```
+    4. **update user (by dictionary)** - Updates attributes of a user object based on its class name, ID, and a dictionary representation of attributes.
+    * Usage: <class_name>.update(<_id>, <dictionary>)
+        
+        ```
+        (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
+        ```
