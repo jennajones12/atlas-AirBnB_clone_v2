@@ -29,7 +29,6 @@ $ ./console.py
 There are a variety of commands available within the console program.
 
 # Usage
-
 ## Primary Syntax Commands
 ---
 ### **Create -** creates an instance based on a given class.  
@@ -66,7 +65,8 @@ There are a variety of commands available within the console program.
     (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
 
 ### **Update (by dictionary) -**
-updates attributes of a user object based on its class name, ID, and a dictionary representation of attributes.
+updates attributes of a user object based on its class name, ID, and a dictionary representation of attributes
+
 '*<class_name>.update(<_id>, <dictionary>)*'       
 #### Example:
     (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
