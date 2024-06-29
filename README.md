@@ -35,9 +35,9 @@ To start the console, run:
 
 ### Primary Command Syntax
 
-#### 1. Create an Object
-##### Creates an instance based on a given class.
-* Usage: create <class_name>
+#### 1. Create an Object ##### Creates an instance based on a given class.
+**Usage:**
+create <class_name>
 
 **Example:** 
 ```
