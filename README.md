@@ -8,7 +8,7 @@ This project is a clone of the AirBnB website, developed as part of a student pr
 <center><h3>Repository Contents</h3> </center>
 
 - [Installation](#installation)
-- [Usage](#usage)
+- [Commands](#commands)
 - [Contributing](#contributing)
 - [License](#license)
 - [Authors](#authors)
@@ -23,7 +23,7 @@ To install and run this project locally, follow these steps:
     ```bash
     pip install -r requirements.txt
     ```
-## Usage
+## Commands
 
 ### Starting the Console
 To start the console, run:
