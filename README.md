@@ -48,6 +48,7 @@ create <class_name>
 #### 2. Destroy an Object
 ---
 ***destroys an object based on class and UUID.***
+
 **Usage:** destroy <class_name> <_id>
 ##### Example:
 ```
