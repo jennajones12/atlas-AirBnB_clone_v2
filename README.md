@@ -31,11 +31,10 @@ There are a variety of commands available within the console program.
 <center> <h1>Usage</h1> </center>
 
 ## Primary Syntax Commands
-### 1. Create 
-* *create <class_name>*
-* creates an instance based on a given class.
+### 1. Create - creates an instance based on a given class.  
+* Usage: *create <class_name>*
 
-**Example:** 
+* **Example:** 
 ```
 (hbnb) create BaseModel
 ```
