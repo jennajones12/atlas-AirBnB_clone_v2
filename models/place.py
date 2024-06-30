@@ -1,10 +1,16 @@
 #!/usr/bin/python3
-""" Place Module for HBNB project """
+""" 
+Place Module for HBNB project 
+"""
+
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-    """ A place to stay """
+    """ 
+    Represents a Place for the HBNB project.
+    """
+    
     city_id = ""
     user_id = ""
     name = ""
@@ -16,3 +22,9 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
+
+def __init__(self, *args, **kwargs):
+    """
+    Initializes a Place instance.
+    """
+    super().__init__(*args, **kwargs)

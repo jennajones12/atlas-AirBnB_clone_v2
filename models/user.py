@@ -1,11 +1,24 @@
 #!/usr/bin/python3
-"""This module defines a class User"""
+
+"""
+User Module for HBNB project
+"""
+
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """This class defines a user by various attributes"""
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    """
+    Represents a User for the HBNB project.
+    """
+    
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""
+    
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes a User instance.
+        """
+        super().__init__(*args, **kwargs)
