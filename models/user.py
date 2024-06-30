@@ -11,12 +11,12 @@ class User(BaseModel):
     """
     Represents a User for the HBNB project.
     """
-    
+
     email = ""
     password = ""
     first_name = ""
     last_name = ""
-    
+
     def __init__(self, *args, **kwargs):
         """
         Initializes a User instance.
