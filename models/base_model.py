@@ -1,12 +1,14 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
+from sqlalchemy import Column, Integer, String, DateTime
+import models
+from sqlalchemy.ext.declarative import declarative_base
+import MySQLdb
+from datetime import datetime
+import uuid
+import os
+<< << << < HEAD
 """This module defines a base class for
 all models in hbnb clone"""
-
-import os
-import uuid
-from datetime import datetime
-import MySQLdb
 
 
 class BaseModel:
@@ -52,13 +54,10 @@ class BaseModel:
                     res[key] = value
         res['__class__'] = self.__class__.__name__
         return res
-=======
+
+
+== == == =
 """BaseModel Module for HBNB project"""
-from sqlalchemy.ext.declarative import declarative_base
-import uuid
-import models
-from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime
 
 
 Base = declarative_base()
@@ -135,4 +134,6 @@ class BaseModel:
         """ delete object
         """
         models.storage.delete(self)
->>>>>>> 630f12b63d127d3ae632c7d15c258eb4a6108daa
+
+
+>>>>>> > 630f12b63d127d3ae632c7d15c258eb4a6108daa
