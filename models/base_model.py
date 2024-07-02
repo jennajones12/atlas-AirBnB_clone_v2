@@ -30,8 +30,8 @@ class BaseModel:
 
     def __str__(self):
         """ Return the string representation of the instance """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
-                                     self.__dict__)
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
         """ Save the current instance to the storage """
