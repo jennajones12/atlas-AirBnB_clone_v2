@@ -1,14 +1,23 @@
-# models/engine/file_storage.py
-
+#!/usr/bin/python3
+"""file storage class for AirBnB"""
 import json
-from datetime import datetime
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
+        if cls:
+            return {k: v for k, v in self.__objects.items()
+                    if isintstance(v, cls)}
         return self.__objects
 
     def new(self, obj):
@@ -16,20 +25,13 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        json_dict = {}
-        for key, value in self.__objects.items():
-            json_dict[key] = value.to_dict()
-
-        with open(self.__file_path, 'w') as file:
-            json.dump(json_dict, file, default=str)
+        with open(self.__file_path, 'w') as f:
+            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
 
     def reload(self):
         try:
-            with open(self.__file_path, 'r') as file:
-                json_dict = json.load(file)
-                for key, value in json_dict.items():
-                    class_name, obj_id = key.split('.')
-                    cls = models.classes[class_name]
-                    self.__objects[key] = cls(**value)
+            with open(self.__file_path, 'r') as f
+                self.__objects = {k: eval(v['__class__'])(**v)
+                        for k, v in json.load(f).items()}
         except FileNotFoundError:
             pass
