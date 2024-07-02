@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
+
 class DBStorage:
     """Database storage engine for HBNB project"""
     __engine = None
@@ -12,7 +13,9 @@ class DBStorage:
 
     def __init__(self):
         """Initialize the database storage engine"""
-        self.__engine = create_engine('mysql+mysqldb://user:password@localhost/db_name')
+        self.__engine = create_engine(
+            'mysql+mysqldb://user:password@localhost/db_name'
+        )
 
     def all(self, cls=None):
         """Query on the current database session"""
