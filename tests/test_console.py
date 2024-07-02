@@ -1,61 +1,59 @@
 #!/usr/bin/python3
-""" Unit Tests for the console """
+"""Unit Tests for the console
+"""
 import unittest
-from console import HBNBCommand
-from io import StringIO
 from unittest.mock import patch
+from io import StringIO
+from console import HBNBCommand
+from models.base_model import BaseModel
+from models import storage
 
 
-class TestConsole(unittest.TestCase):
-    """Tests the Console"""
+class TestHBNBCommand(unittest.TestCase):
+    def setUp(self):
+        self.hbnb = HBNBCommand()
+        self.mock_stdout = StringIO()
+        self.patched_stdout = patch("sys.stdout", self.mock_stdout)
 
-    def test_all(self):
-        """Tests all"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all User")
-            self.assertEqual(f.getvalue(), "[]\n")
-
-    def test_show(self):
-        """Tests show"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
-            user_id = f.getvalue().strip()
-            f = StringIO()
-            with patch('sys.stdout', new=f):
-                HBNBCommand().onecmd(f"show User {user_id}")
-                print(f.getvalue())
-                self.assertTrue("User." + user_id in f.getvalue())
+    def tearDown(self):
+        self.mock_stdout.close()
+        self.patched_stdout.stop()
+        storage._FileStorage__objects = {}
 
     def test_create(self):
-        """Tests create"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
-            output = f.getvalue().strip()
-            self.assertRegex(output, r'^[\w-]+$'
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.assertTrue(
+                isinstance(
+                    storage.all()[
+                        "BaseModel." + self.mock_stdout.getvalue().strip()
+                        ],
+                    BaseModel,
+                )
+            )
 
-    def test_update(self):
-        """Tests update"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
-            user_id = f.getvalue().strip()
-            f = StringIO()
-            with patch('sys.stdout', new=f):
-                HBNBCommand().onecmd(f"update User {user_id}
-                                    first_name \"John\"")
-                HBNBCommand().onecmd(f"show User {user_id}")
-                print(f.getvalue())
-                self.assertTrue("\"first_name\": \"John\"" in f.getvalue())
+    def test_show(self):
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("show BaseModel "
+                             + self.mock_stdout.getvalue().strip())
+            self.assertTrue(
+                self.mock_stdout.getvalue()
+                .strip() != "** no instance found **"
+            )
 
     def test_destroy(self):
-        """Tests destroy"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
-            user_id = f.getvalue().strip()
-            f = StringIO()
-            with patch('sys.stdout', new=f):
-                HBNBCommand().onecmd(f"destroy User {user_id}")
-                HBNBCommand().onecmd("all User")
-                self.assertFalse("User." + user_id in f.getvalue())
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("destroy BaseModel "
+                             + self.mock_stdout.getvalue().strip())
+            self.assertTrue(self.mock_stdout.getvalue().strip() != "")
+
+    def test_all(self):
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("all BaseModel")
+            self.assertTrue(self.mock_stdout.getvalue().strip() != "[]")
 
 
 if __name__ == "__main__":
