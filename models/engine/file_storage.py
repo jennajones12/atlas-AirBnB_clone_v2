@@ -35,4 +35,3 @@ class FileStorage:
                                   for k, v in json.load(f).items()}
         except FileNotFoundError:
             pass
-
