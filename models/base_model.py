@@ -1,61 +1,47 @@
 #!/usr/bin/python3
 """BaseModel Module for HBNB project"""
 
-from datetime import datetime
-import models  # Assuming models is the storage package
 import uuid
+from datetime import datetime
+import models
 
 
 class BaseModel:
-    """Base model for other classes to inherit from."""
+    """ Base class for all models """
 
     def __init__(self, *args, **kwargs):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        """ Initialization of BaseModel instance """
         if kwargs:
-            self.__dict__.update(kwargs)
+            if 'id' in kwargs:
+                self.id = kwargs['id']
+            if 'created_at' in kwargs:
+                self.created_at = datetime.strptime(kwargs['created_at'],
+                                                    "%Y-%m-%dT%H:%M:%S.%f")
+            if 'updated_at' in kwargs:
+                self.updated_at = datetime.strptime(kwargs['updated_at'],
+                                                    "%Y-%m-%dT%H:%M:%S.%f")
+            for key, value in kwargs.items():
+                if key not in ['id', 'created_at', 'updated_at']:
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+            models.storage.new(self)
 
-    def to_dict(self):
-        """Return a dictionary representation of the instance."""
-        d = self.__dict__.copy()
-        d['created_at'] = self.created_at.isoformat()
-        d['updated_at'] = self.updated_at.isoformat()
-        d['__class__'] = self.__class__.__name__
-        return d
+    def __str__(self):
+        """ Return the string representation of the instance """
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
+                                     self.__dict__)
 
     def save(self):
-        """Update updated_at and save the data using storage package."""
+        """ Save the current instance to the storage """
         self.updated_at = datetime.now()
-        models.storage.new(self)
         models.storage.save()
 
-    @property
-    def id(self):
-        """Getter for id."""
-        return self.__id
-
-    @id.setter
-    def id(self, value):
-        """Setter for id."""
-        self.__id = value
-
-    @property
-    def updated_at(self):
-        """Getter for updated_at."""
-        return self.__updated_at
-
-    @updated_at.setter
-    def updated_at(self, value):
-        """Setter for updated_at."""
-        self.__updated_at = value
-
-    @property
-    def created_at(self):
-        """Getter for created_at."""
-        return self.__created_at
-
-    @created_at.setter
-    def created_at(self, value):
-        """Setter for created_at."""
-        self.__created_at = value
+    def to_dict(self):
+        """ Returns a dictionary representation of the instance """
+        dict_copy = self.__dict__.copy()
+        dict_copy['__class__'] = self.__class__.__name__
+        dict_copy['created_at'] = self.created_at.isoformat()
+        dict_copy['updated_at'] = self.updated_at.isoformat()
+        return dict_copy
