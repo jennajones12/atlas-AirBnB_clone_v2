@@ -6,7 +6,6 @@ instances to JSON and deserializing JSON back to instances.
 import json
 from models.base_model import BaseModel
 
-
 class FileStorage:
     """
     Handles serialization and deserialization of instances to/from JSON
@@ -28,8 +27,9 @@ class FileStorage:
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
         with open(FileStorage.__file_path, 'w', encoding='utf-8') as file:
-            json.dump({k: v.to_dict()
-                      for k, v in FileStorage.__objects.items()}, file)
+            # Refactored to multiple lines to adhere to line length limit
+            json_data = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
+            json.dump(json_data, file)
 
     def reload(self):
         """Deserializes the JSON file to __objects (only if the JSON file exists;
@@ -37,9 +37,6 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
-                FileStorage.__objects = {
-                    k: BaseModel(
-                        **v) for k,
-                    v in data.items()}
+                FileStorage.__objects = {k: BaseModel(**v) for k, v in data.items()}
         except FileNotFoundError:
             pass
