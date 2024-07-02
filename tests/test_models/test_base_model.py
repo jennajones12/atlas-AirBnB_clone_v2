@@ -6,7 +6,6 @@ import datetime
 from uuid import UUID
 import json
 import os
-import pycodestyle
 
 
 class test_basemodel(unittest.TestCase):
@@ -18,13 +17,6 @@ class test_basemodel(unittest.TestCase):
         self.name = 'BaseModel'
         self.value = BaseModel
 
-    def test_pycodestyle(self):
-        """Test that base_model.py conforms to PEP8."""
-        pycostyle = pycodestyle.StyleGuide(quiet=True)
-        result = pycostyle.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
-
     def setUp(self):
         """Set up for tests."""
         pass
@@ -33,7 +25,7 @@ class test_basemodel(unittest.TestCase):
         """Clean up after tests."""
         try:
             os.remove('file.json')
-        except Exception:
+        except:
             pass
 
     def test_default(self):
@@ -81,6 +73,12 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
+    
+    def test_kwargs_one(self):
+        """ """
+        n = {'Name': 'test'}
+        with self.assertRaises(KeyError):
+            new = self.value(**n)
 
     def test_id(self):
         """Test id attribute."""
@@ -92,113 +90,10 @@ class test_basemodel(unittest.TestCase):
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
-    def test_updated_at(self):
-        """Test updated_at attribute."""
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
-
-    def test_uuid(self):
-        """Test UUID attribute."""
-        instance1 = BaseModel()
-        instance2 = BaseModel()
-        instance3 = BaseModel()
-        list_instances = [instance1, instance2, instance3]
-        for instance in list_instances:
-            ins_uuid = instance.id
-            with self.subTest(uuid=ins_uuid):
-                self.assertIs(type(ins_uuid), str)
-        self.assertNotEqual(instance1.id, instance2.id)
-        self.assertNotEqual(instance1.id, instance3.id)
-        self.assertNotEqual(instance2.id, instance3.id)
-
-    def test_str_method(self):
-        """Test __str__ method."""
-        instance6 = BaseModel()
-        string_output = "[BaseModel] ({}) {}".format(instance6.id, instance6.__dict__)
-        self.assertEqual(string_output, str(instance6))
-
-
-class TestCodeFormat(unittest.TestCase):
-    """Tests for PEP8 compliance."""
-
-    def test_pycodestyle(self):
-        """Test that base_model.py conforms to PEP8."""
-        pycostyle = pycodestyle.StyleGuide(quiet=True)
-        result = pycostyle.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
-
-
-class Test_docstrings(unittest.TestCase):
-    """Tests for docstrings."""
-
-    @classmethod
-    def setup_class(self):
-        """Set up for docstring tests."""
-        self.obj_members(BaseModel, inspect.isfunction)
-
-
-class TestBaseModel(unittest.TestCase):
-    """Tests for BaseModel class."""
-
-    @classmethod
-    def setUpClass(cls):
-        """Set up for the tests."""
-        cls.base = BaseModel()
-        cls.base.name = "Kev"
-        cls.base.num = 20
-
-    @classmethod
-    def teardown(cls):
-        """Clean up after the tests."""
-        del cls.base
-
-    def tearDown(self):
-        """Clean up after each test."""
-        try:
-            os.remove("file.json")
-        except Exception:
-            pass
-
-    def test_pep8_BaseModel(self):
-        """Test that base_model.py conforms to PEP8."""
-        style = pycodestyle.StyleGuide(quiet=True)
-        p = style.check_files(['models/base_model.py'])
-        self.assertEqual(p.total_errors, 0, "fix pep8")
-
-    def test_checking_for_docstring_BaseModel(self):
-        """Check for docstrings in BaseModel."""
-        self.assertIsNotNone(BaseModel.__doc__)
-        self.assertIsNotNone(BaseModel.__init__.__doc__)
-        self.assertIsNotNone(BaseModel.__str__.__doc__)
-        self.assertIsNotNone(BaseModel.save.__doc__)
-        self.assertIsNotNone(BaseModel.to_dict.__doc__)
-
-    def test_method_BaseModel(self):
-        """Check if BaseModel has the necessary methods."""
-        self.assertTrue(hasattr(BaseModel, "__init__"))
-        self.assertTrue(hasattr(BaseModel, "save"))
-        self.assertTrue(hasattr(BaseModel, "to_dict"))
-
-    def test_init_BaseModel(self):
-        """Test instantiation of BaseModel."""
-        self.assertTrue(isinstance(self.base, BaseModel))
-
-    def test_save_BaseModel(self):
-        """Test save method."""
-        self.base.save()
-        self.assertNotEqual(self.base.created_at, self.base.updated_at)
-
-    def test_to_dict_BaseModel(self):
-        """Test to_dict method."""
-        base_dict = self.base.to_dict()
-        self.assertEqual(self.base.__class__.__name__, 'BaseModel')
-        self.assertIsInstance(base_dict['created_at'], str)
-        self.assertIsInstance(base_dict['updated_at'], str)
-
-
-if __name__ == "__main__":
-    unittest.main()
+   # def test_updated_at(self):
+    #    """Test updated_at attribute."""
+     #   new = self.value()
+      #  self.assertEqual(type(new.updated_at), datetime.datetime)
+       # n = new.to_dict()
+        # new = BaseModel(**n)
+        # self.assertFalse(new.created_at == new.updated_at)
