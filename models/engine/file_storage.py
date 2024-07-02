@@ -41,11 +41,12 @@ class FileStorage:
             json.dump(FileStorage.__objects, file, cls=DateTimeEncoder)
 
     def reload(self):
-        """Deserializes the JSON file to __objects (only if the JSON file exists;
+        """Deserializes JSON file to __objects (only if the JSON file exists;
         otherwise, do nothing)"""
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
-                FileStorage.__objects = {k: BaseModel(**v) for k, v in data.items()}
+                FileStorage.__objects = {k: BaseModel(**v)
+                                         for k, v in data.items()}
         except FileNotFoundError:
             pass
