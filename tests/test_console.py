@@ -39,8 +39,8 @@ class TestConsole(unittest.TestCase):
             user_id = f.getvalue().strip()
             f = StringIO()
             with patch('sys.stdout', new=f):
-                HBNBCommand().onecmd(f"update User {user_id} 
-                        first_name \"John\"")
+                HBNBCommand().onecmd(f"update User {user_id}
+                                        first_name \"John\"")
                 HBNBCommand().onecmd(f"show User {user_id}")
                 self.assertTrue("\"first_name\": \"John\"" in f.getvalue())
 
