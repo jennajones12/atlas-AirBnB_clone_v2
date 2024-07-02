@@ -1,21 +1,11 @@
 #!/usr/bin/python3
-
 """
 State Module for HBNB project
 """
+from sqlalchemy import Column, String
+from models.base_model import BaseModel, Base
 
-from models.base_model import BaseModel
 
-
-class State(BaseModel):
-    """
-    Represents a State for the HBNB project.
-    """
-
-    name = ""
-
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes a State instance.
-        """
-        super().__init__(*args, **kwargs)
+class State(BaseModel, Base):
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)

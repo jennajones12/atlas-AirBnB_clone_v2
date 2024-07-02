@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+""" Unit Tests for the console """
+import unittest
+from console import HBNBCommand
+from io import StringIO
+from unittest.mock import patch
+
+
+class TestConsole(unittest.TestCase):
+    """Tests the Console"""
+
+    def test_all(self):
+        """Tests all"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all User")
+            self.assertEqual(f.getvalue(), "[]\n")  # Assuming no User objects exist yet
+
+    def test_show(self):
+        """Tests show"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            user_id = f.getvalue().strip()  # Get the ID of the new User
+            f = StringIO()  # Reset f
+            with patch('sys.stdout', new=f):
+                HBNBCommand().onecmd(f"show User {user_id}")
+                self.assertTrue("User." + user_id in f.getvalue())  # The output should include the User's ID
+
+    def test_create(self):
+        """Tests create"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            self.assertRegex(f.getvalue(), r'^\w+\n$')  # The output should be an ID followed by a newline
+
+    def test_update(self):
+        """Tests update"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            user_id = f.getvalue().strip()  # Get the ID of the new User
+            f = StringIO()  # Reset f
+            with patch('sys.stdout', new=f):
+                HBNBCommand().onecmd(f"update User {user_id} \
+                                     first_name \"John\"")
+                HBNBCommand().onecmd(f"show User {user_id}")
+                self.assertTrue("\"first_name\": \"John\"" in f.getvalue())  # The User's first_name should be "John"
+
+    def test_destroy(self):
+        """Tests destroy"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            user_id = f.getvalue().strip()  # Get the ID of the new User
+            f = StringIO()  # Reset f
+            with patch('sys.stdout', new=f):
+                HBNBCommand().onecmd(f"destroy User {user_id}")
+                HBNBCommand().onecmd("all User")
+                self.assertFalse("User." + user_id in f.getvalue())  # The User should no longer exist
