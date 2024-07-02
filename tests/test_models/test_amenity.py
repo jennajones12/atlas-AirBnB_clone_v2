@@ -1,29 +1,20 @@
 #!/usr/bin/python3
-
-"""
-Test suite for the Amenity class in the models.amenity module
-"""
-
-from tests.test_models.test_base_model import test_basemodel
+"""Test Amenity Module"""
+from tests.test_models.test_base_model import TestBaseModel
 from models.amenity import Amenity
 
 
-class test_amenity(test_basemodel):
-    """
-    Test cases for the Amenity class
-    """
+class TestAmenity(TestBaseModel):
+    """Test cases for the Amenity class"""
 
-    def __init__(self, *args, **kwargs):
-        """
-        Initialize the test case for Amenity
-        """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    def setUp(self):
+        """Setup method to initialize an instance before each test"""
+        self.model = Amenity()
 
-    def test_name(self):
-        """
-        Test that name is a string
-        """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_name_is_assigned(self):
+        """Test that name is assigned"""
+        self.assertEqual(type(self.model.name), str)
+
+
+if __name__ == '__main__':
+    unittest.main()

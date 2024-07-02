@@ -1,24 +1,27 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""Test City Module"""
+import unittest
+from tests.test_models.test_base_model import TestBaseModel
 from models.city import City
 
 
-class test_City(test_basemodel):
-    """ """
+class TestCity(TestBaseModel):
+    """Test cases for the City class"""
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
+    def setUp(self):
+        """Setup method to initialize an instance before each test"""
+        self.model = City()
+        self.model.name = "San Francisco"
+        self.model.state_id = "CA"
 
-    def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
+    def test_name_is_assigned(self):
+        """Test that name is assigned"""
+        self.assertEqual(type(self.model.name), str)
 
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_state_id_is_assigned(self):
+        """Test that state_id is assigned"""
+        self.assertEqual(type(self.model.state_id), str)
+
+
+if __name__ == '__main__':
+    unittest.main()
