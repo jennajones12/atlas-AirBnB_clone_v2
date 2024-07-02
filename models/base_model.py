@@ -1,47 +1,53 @@
 #!/usr/bin/python3
-"""BaseModel Module for HBNB project"""
+"""This module defines a base class for
+all models in hbnb clone"""
 
+import os
 import uuid
 from datetime import datetime
-import models
+import MySQLdb
 
 
 class BaseModel:
-    """ Base class for all models """
+    """A base class for all hbnb models"""
 
     def __init__(self, *args, **kwargs):
-        """ Initialization of BaseModel instance """
-        if kwargs:
-            if 'id' in kwargs:
-                self.id = kwargs['id']
-            if 'created_at' in kwargs:
-                self.created_at = datetime.strptime(kwargs['created_at'],
-                                                    "%Y-%m-%dT%H:%M:%S.%f")
-            if 'updated_at' in kwargs:
-                self.updated_at = datetime.strptime(kwargs['updated_at'],
-                                                    "%Y-%m-%dT%H:%M:%S.%f")
-            for key, value in kwargs.items():
-                if key not in ['id', 'created_at', 'updated_at']:
-                    setattr(self, key, value)
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
-            models.storage.new(self)
+        """Instantiates a new model"""
+        self.id = kwargs.get('id', str(uuid.uuid4()))
+        self.created_at = kwargs.get('created_at', datetime.now())
+        self.updated_at = kwargs.get('updated_at', datetime.now())
 
     def __str__(self):
-        """ Return the string representation of the instance """
-        return "[{}] ({}) {}".format(self.__class__.__name__,
-                                     self.id, self.__dict__)
+        """Returns a string representation of the instance"""
+        cls = type(self).__name__
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """ Save the current instance to the storage """
+        """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
-        models.storage.save()
+        self.save_to_db()
+
+    def save_to_db(self):
+        """Saves instance data to MySQL database"""
+        db = MySQLdb.connect(host="localhost", user="your_username",
+                             passwd="your_password", db="your_db")
+        cursor = db.cursor()
+        query = """
+                INSERT INTO base_model (id, created_at, updated_at)
+                VALUES (%s, %s, %s)
+                """
+        cursor.execute(query, (self.id, self.created_at, self.updated_at))
+        db.commit()
+        db.close()
 
     def to_dict(self):
-        """ Returns a dictionary representation of the instance """
-        dict_copy = self.__dict__.copy()
-        dict_copy['__class__'] = self.__class__.__name__
-        dict_copy['created_at'] = self.created_at.isoformat()
-        dict_copy['updated_at'] = self.updated_at.isoformat()
-        return dict_copy
+        """Convert instance into dict format"""
+        res = {}
+        for key, value in self.__dict__.items():
+            if key != '_sa_instance_state':
+                if isinstance(value, datetime):
+                    res[key] = value.isoformat()
+                else:
+                    res[key] = value
+        res['__class__'] = self.__class__.__name__
+        return res
