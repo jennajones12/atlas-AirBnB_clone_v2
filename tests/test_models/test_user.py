@@ -1,35 +1,34 @@
 #!/usr/bin/python3
-
-"""
-User Module for HBNB project
-"""
-from sqlalchemy import Column, String
-from models.base_model import BaseModel, Base
+""" """
+from tests.test_models.test_base_model import test_basemodel
+from models.user import User
 
 
-class User(BaseModel, Base):
-    __tablename__ = 'users'
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=True)
-    last_name = Column(String(128), nullable=True)
+class test_User(test_basemodel):
+    """ """
 
     def __init__(self, *args, **kwargs):
-        """Initialize User instance."""
+        """ """
         super().__init__(*args, **kwargs)
-        self.email = kwargs.get('email', "")
-        self.password = kwargs.get('password', "")
-        self.first_name = kwargs.get('first_name', "")
-        self.last_name = kwargs.get('last_name', "")
+        self.name = "User"
+        self.value = User
 
-    def __str__(self):
-        """Return str rep of User instance."""
-        return "[User] ({}) {}".format(self.id, self.__dict__)
+    def test_first_name(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.first_name), str)
 
-    def to_dict(self):
-        """Return dict rep of User instance."""
-        dict_copy = self.__dict__.copy()
-        dict_copy.update({
-            "__class__": type(self).__name__,
-        })
-        return dict_copy
+    def test_last_name(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.last_name), str)
+
+    def test_email(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.email), str)
+
+    def test_password(self):
+        """ """
+        new = self.value()
+        self.assertEqual(type(new.password), str)
