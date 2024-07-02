@@ -13,43 +13,47 @@ class TestConsole(unittest.TestCase):
         """Tests all"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("all User")
-            self.assertEqual(f.getvalue(), "[]\n")  # Assuming no User objects exist yet
+            self.assertEqual(f.getvalue(), "[]\n")
 
     def test_show(self):
         """Tests show"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
-            user_id = f.getvalue().strip()  # Get the ID of the new User
-            f = StringIO()  # Reset f
+            user_id = f.getvalue().strip()
+            f = StringIO()
             with patch('sys.stdout', new=f):
                 HBNBCommand().onecmd(f"show User {user_id}")
-                self.assertTrue("User." + user_id in f.getvalue())  # The output should include the User's ID
+                self.assertTrue("User." + user_id in f.getvalue())
 
     def test_create(self):
         """Tests create"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
-            self.assertRegex(f.getvalue(), r'^\w+\n$')  # The output should be an ID followed by a newline
+            self.assertRegex(f.getvalue(), r'^\w+\n$')
 
     def test_update(self):
         """Tests update"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
-            user_id = f.getvalue().strip()  # Get the ID of the new User
-            f = StringIO()  # Reset f
+            user_id = f.getvalue().strip()
+            f = StringIO()
             with patch('sys.stdout', new=f):
                 HBNBCommand().onecmd(f"update User {user_id} \
                                      first_name \"John\"")
                 HBNBCommand().onecmd(f"show User {user_id}")
-                self.assertTrue("\"first_name\": \"John\"" in f.getvalue())  # The User's first_name should be "John"
+                self.assertTrue("\"first_name\": \"John\"" in f.getvalue())
 
     def test_destroy(self):
         """Tests destroy"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
-            user_id = f.getvalue().strip()  # Get the ID of the new User
-            f = StringIO()  # Reset f
+            user_id = f.getvalue().strip()
+            f = StringIO()
             with patch('sys.stdout', new=f):
                 HBNBCommand().onecmd(f"destroy User {user_id}")
                 HBNBCommand().onecmd("all User")
-                self.assertFalse("User." + user_id in f.getvalue())  # The User should no longer exist
+                self.assertFalse("User." + user_id in f.getvalue())
+
+
+if __name__ == "__main__":
+    unittest.main()
