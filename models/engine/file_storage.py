@@ -9,6 +9,15 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+classes = {
+    "BaseModel": BaseModel,
+    "Amenity": Amenity,
+    "City": City,
+    "Place": Place,
+    "Review": Review,
+    "State": State,
+    "User": User,
+}
 
 class FileStorage:
     __file_path = "file.json"
