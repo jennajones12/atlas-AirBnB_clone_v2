@@ -38,14 +38,14 @@ class BaseModel:
         """Returns string representation of BaseModel instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
-        
+ 
     def save(self):
         """Updates updated_at attribute and saves the instance"""
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
-     def to_dict(self):
+    def to_dict(self):
         """Convert instance into dict format"""
         dictionary = self.__dict__.copy()
         dictionary["__class__"] = self.__class__.__name__
