@@ -16,34 +16,35 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(f.getvalue(), "[]\n")
 
     def test_show(self):
-    """Tests show"""
-    with patch('sys.stdout', new=StringIO()) as f:
-        HBNBCommand().onecmd("create User")
-        user_id = f.getvalue().strip()
-        f = StringIO()
-        with patch('sys.stdout', new=f):
-            HBNBCommand().onecmd(f"show User {user_id}")
-            print(f.getvalue())
-            self.assertTrue("User." + user_id in f.getvalue())
+        """Tests show"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            user_id = f.getvalue().strip()
+            f = StringIO()
+            with patch('sys.stdout', new=f):
+                HBNBCommand().onecmd(f"show User {user_id}")
+                print(f.getvalue())
+                self.assertTrue("User." + user_id in f.getvalue())
 
     def test_create(self):
-    """Tests create"""
-    with patch('sys.stdout', new=StringIO()) as f:
-        HBNBCommand().onecmd("create User")
-        output = f.getvalue().strip()
-        self.assertRegex(output, r'^[\w-]+$', "Output should match UUID format")
-   
+        """Tests create"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            output = f.getvalue().strip()
+            self.assertRegex(output, r'^[\w-]+$'
+
     def test_update(self):
-    """Tests update"""
-    with patch('sys.stdout', new=StringIO()) as f:
-        HBNBCommand().onecmd("create User")
-        user_id = f.getvalue().strip()
-        f = StringIO()
-        with patch('sys.stdout', new=f):
-            HBNBCommand().onecmd(f"update User {user_id} first_name \"John\"")
-            HBNBCommand().onecmd(f"show User {user_id}")
-            print(f.getvalue())
-            self.assertTrue("\"first_name\": \"John\"" in f.getvalue())
+        """Tests update"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            user_id = f.getvalue().strip()
+            f = StringIO()
+            with patch('sys.stdout', new=f):
+                HBNBCommand().onecmd(f"update User {user_id}
+                                    first_name \"John\"")
+                HBNBCommand().onecmd(f"show User {user_id}")
+                print(f.getvalue())
+                self.assertTrue("\"first_name\": \"John\"" in f.getvalue())
 
     def test_destroy(self):
         """Tests destroy"""
