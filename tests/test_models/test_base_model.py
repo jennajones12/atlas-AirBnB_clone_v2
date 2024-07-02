@@ -69,10 +69,10 @@ class TestBaseModel(unittest.TestCase):
             new = BaseModel(**n)
     
     def test_kwargs_one(self):
-        """Test instantiation"""
-        n = {'name': 'test'}
-        with self.assertRaises(KeyError):
-            new = BaseModel(**n)
+    """Test instantiation with unexpected key in kwargs."""
+    n = {'name': 'test'}
+    new = BaseModel(**n)
+    self.assertNotIn('name', new.__dict__)
     
     def test_id(self):
         """Test id attribute."""
