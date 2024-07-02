@@ -73,7 +73,13 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
-
+    
+    def test_kwargs_one(self):
+        """ """
+        n = {'Name': 'test'}
+        with self.assertRaises(KeyError):
+            new = self.value(**n)
+    
     def test_id(self):
         """Test id attribute."""
         new = self.value()
@@ -84,7 +90,7 @@ class test_basemodel(unittest.TestCase):
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
-   # def test_updated_at(self):
+    # def test_updated_at(self):
     #    """Test updated_at attribute."""
      #   new = self.value()
       #  self.assertEqual(type(new.updated_at), datetime.datetime)
