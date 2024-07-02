@@ -30,10 +30,10 @@ class Test_PEP8(unittest.TestCase):
 
     def test_pep8_user(self):
         """test pep8 style"""
-         pep8style = pycodestyle.StyleGuide(quiet=True)
-         result = pep8style.check_files(['models/city.py'])
-         self.assertEqual(result.total_errors, 0,
-                  "Found code style errors (and warnings).")
+        pep8style = pycodestyle.StyleGuide(quiet=True)
+        result = pep8style.check_files(['models/city.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
 
 
 class TestCity(unittest.TestCase):
@@ -66,7 +66,7 @@ class TestCity(unittest.TestCase):
 
     def test_checking_for_docstring_City(self):
         """Check for docstrings in City."""
-        self.assertIsNotNone(City.__doc__)       
+        self.assertIsNotNone(City.__doc__)
 
     def test_save_City(self):
         """Test save method."""

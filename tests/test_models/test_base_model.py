@@ -67,13 +67,13 @@ class TestBaseModel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = BaseModel(**n)
-    
+
     def test_kwargs_one(self):
     """Test instantiation with unexpected key in kwargs."""
     n = {'name': 'test'}
     new = BaseModel(**n)
     self.assertNotIn('name', new.__dict__)
-    
+
     def test_id(self):
         """Test id attribute."""
         new = BaseModel()
@@ -90,6 +90,7 @@ class TestBaseModel(unittest.TestCase):
         old_updated_at = new.updated_at
         new.save()
         self.assertNotEqual(old_updated_at, new.updated_at)
+
 
 if __name__ == '__main__':
     unittest.main()

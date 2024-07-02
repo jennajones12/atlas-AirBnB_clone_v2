@@ -27,7 +27,7 @@ class TestHBNBCommand(unittest.TestCase):
                 isinstance(
                     storage.all()[
                         "BaseModel." + self.mock_stdout.getvalue().strip()
-                        ],
+                    ],
                     BaseModel,
                 )
             )

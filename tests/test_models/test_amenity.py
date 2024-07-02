@@ -13,6 +13,7 @@ import unittest
 
 storage_t = getenv("HBNB_TYPE_STORAGE")
 
+
 class TestAmenity(TestBaseModel):
     """Test Amenity"""
 
@@ -30,6 +31,7 @@ class TestAmenity(TestBaseModel):
 
 class TestPEP8(unittest.TestCase):
     """test PEP8 compliance"""
+
     def test_pep8(self):
         """test PEP8 style"""
         pep8style = pycodestyle.StyleGuide(quiet=True)
