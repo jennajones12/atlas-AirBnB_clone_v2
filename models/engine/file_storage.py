@@ -1,10 +1,13 @@
 #!/usr/bin/python3
+
 """
 This module defines the FileStorage class responsible for serializing
 instances to JSON and deserializing JSON back to instances.
 """
+
 import json
 from models.base_model import BaseModel
+
 
 class FileStorage:
     """
@@ -27,7 +30,7 @@ class FileStorage:
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
         with open(FileStorage.__file_path, 'w', encoding='utf-8') as file:
-            # Refactored to multiple lines to adhere to line length limit
+            # Refactored to adhere to line length limit
             json_data = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
             json.dump(json_data, file)
 
