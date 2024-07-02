@@ -1,83 +1,55 @@
 #!/usr/bin/python3
 """Database Storage module for the HBNB project"""
-
-import MySQLdb
-import models
-
-classes = {
-    'User': User,
-    'State': State,
-    'City': City,
-    'Amenity': Amenity,
-    'Place': Place,
-    'Review': Review
-}
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
+from os import getenv
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class DBStorage:
-    """Database storage engine for HBNB project"""
-    __db = None
-    __cursor = None
+    __engine = None
+    __session = None
 
     def __init__(self):
-        """Initialize the database storage engine"""
-        self.__db = MySQLdb.connect(
-            host='localhost',
-            user='user',
-            passwd='password',
-            db='db_name',
-            port=3306,
-            charset="utf8"
-        )
-        self.__cursor = self.__db.cursor()
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'
+                                      .format(getenv('HBNB_MYSQL_USER'),
+                                              getenv('HBNB_MYSQL_PWD'),
+                                              getenv('HBNB_MYSQL_HOST'),
+                                              getenv('HBNB_MYSQL_DB')),
+                                      pool_pre_ping=True)
+        self.reload()
+
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query all objects or objects of a specific class"""
-        objects = {}
+        new_dict = {}
         if cls:
-            self.__cursor.execute("SELECT * FROM {}"
-                                  .format(cls.__tablename__))
-        else:
-            # Loop through registered classes and fetch objects
-            for cls in classes.values():
-                self.__cursor.execute("SELECT * FROM {}"
-                                      .format(cls.__tablename__))
-                results = self.__cursor.fetchall()
-                for row in results:
-                    # Create instances from retrieved rows and add to dict
-                    key = "{}.{}".format(row[1], row[0])
-                    objects[key] = cls(**row)
-        return objects
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = '{}.{}'.format(type(obj).__name__, obj.id)
+                new_dict[key] = obj
+        return new_dict
 
     def new(self, obj):
-        """Add object to the database"""
-        values = ', '.join(["'{}'".format(val) for val in
-                            obj.to_dict().values()])
-        query = "INSERT INTO {} ({}) VALUES ({})".format(
-            obj.__tablename__,
-            ', '.join(obj.to_dict().keys()),
-            values
-        )
-        self.__cursor.execute(query)
-        self.__db.commit()
+        self.__session.add(obj)
 
     def save(self):
-        """Commit changes to the database"""
-        self.__db.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
-        """Delete object from the database"""
         if obj:
-            query = "DELETE FROM {} WHERE id='{}'"
-            .format(obj.__tablename__, obj.id)
-            self.__cursor.execute(query)
-            self.__db.commit()
+            self.__session.delete(obj)
 
     def reload(self):
-        """Reload data from the database"""
-        pass
-
-    def close(self):
-        """Close database connection"""
-        self.__cursor.close()
-        self.__db.close()
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session
