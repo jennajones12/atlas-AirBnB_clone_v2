@@ -27,7 +27,7 @@ class test_DBStorage(unittest.TestCase):
             self.assertTrue(city.name, "Tulsa")
 
     def testPlace(self):
-    """tests if place name will establish itself"""
+        """tests if place name will establish itself"""
     place = Place(name="studio", number_beds=1)
     if place.id in models.storage.all():
         self.assertTrue(place.number_beds, 1)

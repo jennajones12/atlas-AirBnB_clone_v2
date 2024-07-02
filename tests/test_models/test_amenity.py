@@ -149,7 +149,7 @@ class TestAmenityGeneral(unittest.TestCase):
         self.assertTrue("__class__" in new_d)
 
     def test_to_dict_values(self):
-    """test that values in dict returned from to_dict are correct"""
+        """test that values in dict returned from to_dict are correct"""
     t_format = "%Y-%m-%dT%H:%M:%S.%f"
     am = Amenity()
     new_d = am.to_dict()
