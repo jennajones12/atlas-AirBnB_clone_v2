@@ -25,13 +25,26 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
+        json_objects = {}
+        for key in self.__objects:
+            json_objects[key] = self.__objects[key].to_dict()
         with open(self.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
+            json.dump(json_objects, f)
 
     def reload(self):
         try:
             with open(self.__file_path, 'r') as f:
-                self.__objects = {k: eval(v['__class__'])(**v)
-                                  for k, v in json.load(f).items()}
+                jo = json.load(f)
+                for key in jo:
+                    self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id
+            if key in self.__objects:
+                del self.__objects[key]
+
+    def close(self):
+        self.reload()
