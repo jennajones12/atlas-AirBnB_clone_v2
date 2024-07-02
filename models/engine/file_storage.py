@@ -17,7 +17,7 @@ class FileStorage:
     def all(self, cls=None):
         if cls:
             return {k: v for k, v in self.__objects.items()
-                    if isintstance(v, cls)}
+                    if isinstance(v, cls)}
         return self.__objects
 
     def new(self, obj):
@@ -32,6 +32,7 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r') as f:
                 self.__objects = {k: eval(v['__class__'])(**v)
-                        for k, v in json.load(f).items()}
+                                  for k, v in json.load(f).items()}
         except FileNotFoundError:
             pass
+
