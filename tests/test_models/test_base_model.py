@@ -1,21 +1,14 @@
 #!/usr/bin/python3
 """Unit tests for BaseModel class and related functionality."""
-from models.base_model import BaseModel
 import unittest
 import datetime
-from uuid import UUID
 import json
 import os
+from models.base_model import BaseModel
 
 
-class test_basemodel(unittest.TestCase):
+class TestBaseModel(unittest.TestCase):
     """Tests for BaseModel class."""
-
-    def __init__(self, *args, **kwargs):
-        """Initialize test_basemodel instance."""
-        super().__init__(*args, **kwargs)
-        self.name = 'BaseModel'
-        self.value = BaseModel
 
     def setUp(self):
         """Set up for tests."""
@@ -25,24 +18,24 @@ class test_basemodel(unittest.TestCase):
         """Clean up after tests."""
         try:
             os.remove('file.json')
-        except:
+        except FileNotFoundError:
             pass
 
     def test_default(self):
         """Test default instantiation."""
-        i = self.value()
-        self.assertEqual(type(i), self.value)
+        i = BaseModel()
+        self.assertEqual(type(i), BaseModel)
 
     def test_kwargs(self):
         """Test instantiation with kwargs."""
-        i = self.value()
+        i = BaseModel()
         copy = i.to_dict()
         new = BaseModel(**copy)
-        self.assertFalse(new is i)
+        self.assertNotEqual(new, i)
 
     def test_kwargs_int(self):
         """Test instantiation with invalid kwargs."""
-        i = self.value()
+        i = BaseModel()
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
@@ -50,21 +43,22 @@ class test_basemodel(unittest.TestCase):
 
     def test_save(self):
         """Test save method."""
-        i = self.value()
+        i = BaseModel()
         i.save()
-        key = self.name + "." + i.id
+        key = 'BaseModel.' + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
         """Test __str__ method."""
-        i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id, i.__dict__))
+        i = BaseModel()
+        self.assertEqual(str(i), '[BaseModel] ({}) {}'.format(
+            i.id, i.__dict__))
 
     def test_todict(self):
         """Test to_dict method."""
-        i = self.value()
+        i = BaseModel()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
@@ -72,28 +66,30 @@ class test_basemodel(unittest.TestCase):
         """Test instantiation with None as kwargs."""
         n = {None: None}
         with self.assertRaises(TypeError):
-            new = self.value(**n)
+            new = BaseModel(**n)
     
     def test_kwargs_one(self):
-        """ """
-        n = {'Name': 'test'}
+        """Test instantiation"""
+        n = {'name': 'test'}
         with self.assertRaises(KeyError):
-            new = self.value(**n)
+            new = BaseModel(**n)
     
     def test_id(self):
         """Test id attribute."""
-        new = self.value()
+        new = BaseModel()
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
         """Test created_at attribute."""
-        new = self.value()
+        new = BaseModel()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
-    # def test_updated_at(self):
-    #    """Test updated_at attribute."""
-     #   new = self.value()
-      #  self.assertEqual(type(new.updated_at), datetime.datetime)
-       # n = new.to_dict()
-        # new = BaseModel(**n)
-        # self.assertFalse(new.created_at == new.updated_at)
+    def test_updated_at(self):
+        """Test updated_at attribute."""
+        new = BaseModel()
+        old_updated_at = new.updated_at
+        new.save()
+        self.assertNotEqual(old_updated_at, new.updated_at)
+
+if __name__ == '__main__':
+    unittest.main()
