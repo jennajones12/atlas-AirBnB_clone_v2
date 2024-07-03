@@ -1,65 +1,83 @@
 #!/usr/bin/python3
 """ Database Storage module for the HBNB project """
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-import os
-from models.base_model import Base
-from models.state import State
-from models.city import City
+import MySQLdb
+import models
+
+classes = {
+    'User': User,
+    'State': State,
+    'City': City,
+    'Amenity': Amenity,
+    'Place': Place,
+    'Review': Review
+}
 
 
 class DBStorage:
-    """ class manages storage of hbnb models in a SQL database """
-    __engine = None
-    __session = None
+    """Database storage engine for HBNB project"""
+    __db = None
+    __cursor = None
 
     def __init__(self):
-        """ initializes DBStorage """
-        user = os.getenv('HBNB_MYSQL_USER')
-        password = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        db = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine(
-            f'mysql+mysqldb://{user}:{password}@{host}/{db}',
-            pool_pre_ping=True)
-        if os.getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+        """Initialize the database storage engine"""
+        self.__db = MySQLdb.connect(
+            host='localhost',
+            user='user',
+            passwd='password',
+            db='db_name',
+            port=3306,
+            charset="utf8"
+        )
+        self.__cursor = self.__db.cursor()
 
     def all(self, cls=None):
-        """ returns a dictionary of models currently in storage """
-        new_dict = {}
+        """Query all objects or objects of a specific class"""
+        objects = {}
         if cls:
-            objs = self.__session.query(cls).all()
-            for obj in objs:
-                key = obj.__class__.__name__ + '.' + obj.id
-                new_dict[key] = obj
-            else:
-                classes = [State, City]
-                for cls in classes:
-                    objs = self.__session.query(cls).all()
-                    for obj in objs:
-                        key = obj.__class__.__name__ + '.' + obj.id
-                        new_dict[key] = obj
-            return new_dict
+            self.__cursor.execute("SELECT * FROM {}"
+                                  .format(cls.__tablename__))
+        else:
+            # Loop through registered classes and fetch objects
+            for cls in classes.values():
+                self.__cursor.execute("SELECT * FROM {}"
+                                      .format(cls.__tablename__))
+                results = self.__cursor.fetchall()
+                for row in results:
+                    # Create instances from retrieved rows and add to dict
+                    key = "{}.{}".format(row[1], row[0])
+                    objects[key] = cls(**row)
+        return objects
 
     def new(self, obj):
-        """ adds new obj to database session """
-        self.__session.add(obj)
+        """Add object to the database"""
+        values = ', '.join(["'{}'".format(val) for val in
+                            obj.to_dict().values()])
+        query = "INSERT INTO {} ({}) VALUES ({})".format(
+            obj.__tablename__,
+            ', '.join(obj.to_dict().keys()),
+            values
+        )
+        self.__cursor.execute(query)
+        self.__db.commit()
 
     def save(self):
-        """ commits changes of current session """
-        self.__session.commit()
+        """Commit changes to the database"""
+        self.__db.commit()
 
     def delete(self, obj=None):
-        """ deletes obj from current database session """
+        """Delete object from the database"""
         if obj:
-            self.__session.delete(obj)
+            query = "DELETE FROM {} WHERE id='{}'"
+            .format(obj.__tablename__, obj.id)
+            self.__cursor.execute(query)
+            self.__db.commit()
 
     def reload(self):
-        """ reloads data from database """
-        Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(
-            bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        """Reload data from the database"""
+        pass
+
+    def close(self):
+        """Close database connection"""
+        self.__cursor.close()
+        self.__db.close()
