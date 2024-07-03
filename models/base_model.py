@@ -8,6 +8,7 @@ import models
 
 Base = declarative_base()
 
+
 class BaseModel:
     EXPECTED_KEYS = ['id', 'created_at', 'updated_at']
 
