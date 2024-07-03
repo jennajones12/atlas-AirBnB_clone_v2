@@ -26,20 +26,28 @@ class TestHBNBCommand(unittest.TestCase):
 
     def test_create(self):
         """Test create command functionality."""
-        #
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create BaseModel")
-            output = f.getvalue().strip()
-            self.assertIn("new_instance_id", output)
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.assertTrue(
+                    isinstance(
+                        storage.all()[
+                            "BaseModel." + self.mock_stdout.getvalue().strip()
+                            ]
+                        BaseModel,
+                    )
+                )
+
 
     def test_show(self):
         """Test show command functionality."""
-        #
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("show BaseModel 123")
-            output = f.getvalue().strip()
-            self.assertIn("Object details", output)
-
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("show BaseModel "
+                    + self.mock_stdout.getvalue().strip())
+            self.assertTrue(
+                self.mock_stdout.getvalue()
+                .strip() != "** no instance found **"
+            )
 
 if __name__ == "__main__":
     unittest.main()
