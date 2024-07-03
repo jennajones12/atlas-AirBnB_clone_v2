@@ -13,7 +13,7 @@ from models.review import Review
 
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-            "Place": Place, "Review": Review, "State": State, "User": User}
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -21,7 +21,6 @@ class HBNBCommand(cmd.Cmd):
 
     # interactive/non-interactive mode determination prompt
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
 
     def do_create(self, arg):
         """Create a new instance of a class"""
@@ -80,6 +79,7 @@ class HBNBCommand(cmd.Cmd):
                 if len(args) == 0 or key.split('.')[0] == args[0]:
                     instances.append(str(obj))
             print(instances)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
