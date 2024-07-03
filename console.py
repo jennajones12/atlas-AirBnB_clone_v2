@@ -1,25 +1,22 @@
 #!/usr/bin/python3
 """ Console module """
-
 import cmd
-from datetime import datetime
-import models
-from models.amenity import Amenity
+import sys
 from models.base_model import BaseModel
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
+from models.__init__ import storage
 from models.user import User
-import shlex
-
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """ HBNH console """
-    prompt = '(hbnb) '
+    
+    # interactive/non-interactive mode determination prompt
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     def do_EOF(self, arg):
         """Exits console"""

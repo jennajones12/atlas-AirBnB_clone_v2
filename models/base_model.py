@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""BaseModel Module for HBNB project"""
+""" Contains class BaseModel for all models in hbnb clone """
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime
@@ -8,20 +8,19 @@ import models
 
 Base = declarative_base()
 
-
 class BaseModel:
-    """BaseModel class definition"""
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    """ base class from which future classes will be derived """
+        id = Column(String(60), primary_key=True, nullable=False)
+        created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+        updated_at = Column(DateTime, default=datetime.utcnow,nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Initializes BaseModel instance"""
+        """ initialization of new model """
         if kwargs:
             for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key != "__class__":
+                if key == 'created_at' or key == 'updated_at':
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                if key != '__class__':
                     setattr(self, key, value)
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
@@ -35,18 +34,18 @@ class BaseModel:
             self.updated_at = datetime.now()
 
     def __str__(self):
-        """Returns string representation of BaseModel instance"""
+        """ string rep of the instance """
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at attribute and saves the instance"""
+        """ updates'updated_at' with current datetime """
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """ returns dict format of instance """
         dictionary = self.__dict__.copy()
         dictionary["__class__"] = self.__class__.__name__
         dictionary["created_at"] = self.created_at.isoformat()
@@ -56,5 +55,5 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        """Deletes the instance from storage"""
+        """ delete current instance from storage """
         models.storage.delete(self)
