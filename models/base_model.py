@@ -16,9 +16,12 @@ class BaseModel:
         """Initializes BaseModel instance"""
         if kwargs:
             for key, value in kwargs.items():
-                if key not in self.EXPECTED_KEYS:
+                if key not in self.EXPECTED_KEYS and key != "__class__":
                     raise KeyError(f'Unexpected key: {key}')
-                setattr(self, key, value)
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
+                    setattr(self, key, value)
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
             if 'created_at' not in kwargs:
