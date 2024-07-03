@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """Unit tests for City class"""
+import unittest
+import os
+import pycodestyle
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
-import pycodestyle
 
 
 class test_City(test_basemodel):
@@ -47,7 +49,7 @@ class TestCity(unittest.TestCase):
         cls.city.state_id = "CA"
 
     @classmethod
-    def teardown(cls):
+    def tearDownClass(cls):
         """Clean up after the tests."""
         del cls.city
 
@@ -60,7 +62,7 @@ class TestCity(unittest.TestCase):
 
     def test_pep8_City(self):
         """Test that city.py conforms to PEP8."""
-        style = pep8.StyleGuide(quiet=True)
+        style = pycodestyle.StyleGuide(quiet=True)
         p = style.check_files(['models/city.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
