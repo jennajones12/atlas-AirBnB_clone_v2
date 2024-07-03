@@ -15,6 +15,7 @@ from models import storage
 
 class TestHBNBCommand(unittest.TestCase):
 
+
     def setUp(self):
         """Set up the test case."""
         self.console = HBNBCommand()
@@ -38,5 +39,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd("show BaseModel 123")
             output = f.getvalue().strip()
             self.assertIn("Object details", output)
+
+
 if __name__ == "__main__":
     unittest.main()
