@@ -17,13 +17,13 @@ class test_City(test_basemodel):
         self.value = City
 
     def test_state_id(self):
-        """ """
-        new = self.value()
+        """Test state_id attribute type."""
+        new = self.value(state_id="CA")
         self.assertEqual(type(new.state_id), str)
 
     def test_name(self):
-        """ """
-        new = self.value()
+        """Test name attribute type."""
+        new = self.value(name="San Francisco")
         self.assertEqual(type(new.name), str)
 
 
@@ -82,3 +82,4 @@ class TestCity(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

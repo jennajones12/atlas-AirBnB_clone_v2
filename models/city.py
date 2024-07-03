@@ -6,6 +6,7 @@ from models.base_model import BaseModel
 
 
 class City(BaseModel):
+    """City class for representing cities in a database."""
     __tablename__ = 'cities'
 
     name = Column(String(128), nullable=False)
