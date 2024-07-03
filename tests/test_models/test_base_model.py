@@ -8,8 +8,9 @@ import json
 import os
 
 
-class test_basemodel(unittest.TestCase):
+class TestBaseModel(unittest.TestCase):
     """ """
+    pass
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -97,3 +98,6 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+if __name__ == "__main__":
+    unittest.main()
