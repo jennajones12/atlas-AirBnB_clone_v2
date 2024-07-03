@@ -4,14 +4,8 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-from console import HBNBCommand
 from models import storage
+from console import HBNBCommand
 
 
 class TestHBNBCommand(unittest.TestCase):
@@ -25,28 +19,23 @@ class TestHBNBCommand(unittest.TestCase):
         pass
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_create(self):
+    def test_create(self, mock_stdout):
         """Test create command functionality."""
-        with self.patched_stdout:
-            self.console.onecmd("create BaseModel")
-            is_instance = isinstance(
-                storage.all()["BaseModel." +
-                              self.mock_stdout.getvalue().strip()],
-                BaseModel
-            )
-            self.assertTrue(is_instance)
+        self.console.onecmd("create BaseModel")
+        is_instance = isinstance(
+            storage.all()["BaseModel." + mock_stdout.getvalue().strip()],
+            BaseModel
+        )
+        self.assertTrue(is_instance)
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_show(self):
+    def test_show(self, mock_stdout):
         """Test show command functionality."""
-        with self.patched_stdout:
-            self.hbnb.onecmd("create BaseModel")
-            self.hbnb.onecmd("show BaseModel "
-                             + self.mock_stdout.getvalue().strip())
-            self.assertTrue(
-                self.mock_stdout.getvalue()
-                .strip() != "** no instance found **"
-            )
+        self.console.onecmd("create BaseModel")
+        self.console.onecmd("show BaseModel " + mock_stdout.getvalue().strip())
+        self.assertTrue(
+            mock_stdout.getvalue().strip() != "** no instance found **"
+        )
 
 
 if __name__ == "__main__":
