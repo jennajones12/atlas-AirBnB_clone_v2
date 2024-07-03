@@ -6,14 +6,15 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import models
 
+
 Base = declarative_base()
 
 class BaseModel:
     EXPECTED_KEYS = [
-        'id', 
-        'created_at', 
-        'updated_at', 
-        'name', 
+        'id',
+        'created_at',
+        'updated_at',
+        'name',
         'state_id'
     ]
 
@@ -25,7 +26,7 @@ class BaseModel:
                     raise KeyError(f'Unexpected key: {key}')
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(
-                        value, 
+                        value,
                         "%Y-%m-%dT%H:%M:%S.%f"
                     )
                 if key != "__class__":
