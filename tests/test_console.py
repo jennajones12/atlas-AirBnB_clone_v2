@@ -3,42 +3,56 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
+from console import HBNBCommand
 from models.base_model import BaseModel
 from models import storage
-from console import HBNBCommand
 
 
 class TestHBNBCommand(unittest.TestCase):
-
     def setUp(self):
-        """Set up the test case."""
-        self.console = HBNBCommand()
+        self.hbnb = HBNBCommand()
+        self.mock_stdout = StringIO()
+        self.patched_stdout = patch("sys.stdout", self.mock_stdout)
 
     def tearDown(self):
-        """Clean up after the test case."""
-        pass
+        self.mock_stdout.close()
+        self.patched_stdout.stop()
+        storage._FileStorage__objects = {}
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_create(self, mock_stdout):
-        """Test create command functionality."""
-        self.console.onecmd("create BaseModel")
-        print("Mock stdout:", repr(mock_stdout.getvalue().strip()))
-        key = "BaseModel." + mock_stdout.getvalue().strip().replace('\n', '')
-        print("Key:", repr(key))
-        is_instance = isinstance(
-            storage.all()[key],
-            BaseModel
-        )
-        self.assertTrue(is_instance)
+    def test_create(self):
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.assertTrue(
+                isinstance(
+                    storage.all()[
+                        "BaseModel." + self.mock_stdout.getvalue().strip()
+                        ],
+                    BaseModel,
+                )
+            )
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_show(self, mock_stdout):
-        """Test show command functionality."""
-        self.console.onecmd("create BaseModel")
-        self.console.onecmd("show BaseModel " + mock_stdout.getvalue().strip())
-        self.assertTrue(
-            mock_stdout.getvalue().strip() != "** no instance found **"
-        )
+    def test_show(self):
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("show BaseModel "
+                             + self.mock_stdout.getvalue().strip())
+            self.assertTrue(
+                self.mock_stdout.getvalue()
+                .strip() != "** no instance found **"
+            )
+
+    def test_destroy(self):
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("destroy BaseModel "
+                             + self.mock_stdout.getvalue().strip())
+            self.assertTrue(self.mock_stdout.getvalue().strip() != "")
+
+    def test_all(self):
+        with self.patched_stdout:
+            self.hbnb.onecmd("create BaseModel")
+            self.hbnb.onecmd("all BaseModel")
+            self.assertTrue(self.mock_stdout.getvalue().strip() != "[]")
 
 
 if __name__ == "__main__":
