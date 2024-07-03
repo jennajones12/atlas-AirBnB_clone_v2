@@ -27,14 +27,12 @@ class TestHBNBCommand(unittest.TestCase):
     def test_create(self):
         """Test create command functionality."""
         with self.patched_stdout:
-            self.hbnb.onecmd("create BaseModel")
-            self.assertTrue(
-                    is_instance=isinstance(
-    storage.all()["BaseModel." + self.mock_stdout.getvalue().strip()],
-    BaseModel
-)
-self.assertTrue(is_instance)
-
+            self.console.onecmd("create BaseModel")
+            is_instance = isinstance(
+                storage.all()["BaseModel." + self.mock_stdout.getvalue().strip()],
+                BaseModel
+            )
+            self.assertTrue(is_instance)
 
     def test_show(self):
         """Test show command functionality."""
