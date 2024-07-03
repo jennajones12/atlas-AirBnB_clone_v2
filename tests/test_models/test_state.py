@@ -14,7 +14,7 @@ class test_state(test_basemodel):
         self.value = State
 
     def test_name3(self):
-        """ """
-        new = self.value()
-        print(f"Type of new.name: {type(new.name)}")
-        self.assertEqual(type(new.name), str)
+    """Test that name is a string"""
+    new = self.value()
+    new.name = "test"
+    self.assertEqual(type(new.name), str)
