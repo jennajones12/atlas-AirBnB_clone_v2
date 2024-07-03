@@ -17,8 +17,8 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if (key not in self.EXPECTED_KEYS and 
-                    key != "__class__" and 
-                    key != "state_id"):
+                        key != "__class__" and 
+                        key != "state_id"):
                     raise KeyError(f'Unexpected key: {key}')
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
