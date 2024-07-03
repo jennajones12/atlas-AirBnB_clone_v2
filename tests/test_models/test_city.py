@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Unit tests for City class"""
+import unittest
 from tests.test_models.test_base_model import test_basemodel
-from models.city import City
 
 
 class test_City(test_basemodel):
@@ -11,7 +11,11 @@ class test_City(test_basemodel):
         """ """
         super().__init__(*args, **kwargs)
         self.name = "City"
-        self.value = City
+        self.value = self.get_city_class()
+
+    def get_city_class(self):
+        from models.city import City
+        return City
 
     def test_state_id(self):
         """Test state_id attribute type."""
@@ -23,3 +27,5 @@ class test_City(test_basemodel):
         new = self.value()
         self.assertEqual(type(new.name), str)
 
+if __name__ == "__main__":
+    unittest.main()
