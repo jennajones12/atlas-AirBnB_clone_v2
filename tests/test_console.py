@@ -24,6 +24,7 @@ class TestHBNBCommand(unittest.TestCase):
         """Clean up after the test case."""
         pass
 
+    @patch('sys.stdout', new_callable=StringIO)
     def test_create(self):
         """Test create command functionality."""
         with self.patched_stdout:
@@ -35,6 +36,7 @@ class TestHBNBCommand(unittest.TestCase):
             )
             self.assertTrue(is_instance)
 
+    @patch('sys.stdout', new_callable=StringIO)
     def test_show(self):
         """Test show command functionality."""
         with self.patched_stdout:
