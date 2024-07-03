@@ -167,5 +167,6 @@ class TestAmenityGeneral(unittest.TestCase):
         string = "[Amenity] ({}) {}".format(amenity.id, amenity.__dict__)
         self.assertEqual(string, str(amenity))
 
+
 if __name__ == '__main__':
     unittest.main()
