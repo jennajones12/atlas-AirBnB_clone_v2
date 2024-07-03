@@ -29,8 +29,9 @@ class TestHBNBCommand(unittest.TestCase):
         with self.patched_stdout:
             self.console.onecmd("create BaseModel")
             is_instance = isinstance(
-                storage.all()["BaseModel." + self.mock_stdout.getvalue().strip()],
-                BaseModel
+                storage.all()["BaseModel." +
+                                self.mock_stdout.getvalue().strip()],
+                                    BaseModel
             )
             self.assertTrue(is_instance)
 
