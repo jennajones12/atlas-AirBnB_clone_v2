@@ -22,6 +22,7 @@ class TestHBNBCommand(unittest.TestCase):
     def test_create(self, mock_stdout):
         """Test create command functionality."""
         self.console.onecmd("create BaseModel")
+        print(storage.all())
         is_instance = isinstance(
             storage.all()["BaseModel." + mock_stdout.getvalue().strip()],
             BaseModel
