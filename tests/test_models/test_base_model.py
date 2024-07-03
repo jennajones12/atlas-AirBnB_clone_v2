@@ -33,11 +33,12 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
-        i = self.value()
-        copy = i.to_dict()
+        """Test initialization with kwargs."""
+        copy = {'id': '1234', 'created_at': '2023-07-01T12:00:00.000000',
+                'updated_at': '2023-07-01T12:00:00.000000',
+                'name': 'San Francisco'}
         new = BaseModel(**copy)
-        self.assertFalse(new is i)
+        self.assertEqual(new.name, 'San Francisco')
 
     def test_kwargs_int(self):
         """ """
@@ -91,9 +92,11 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
+        """Test updated_at attribute."""
+        n = {'id': '1234', 'created_at': '2023-07-01T12:00:00.000000',
+                'updated_at': '2023-07-01T12:00:00.000000',
+                'name': 'San Francisco'}
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertEqual(new.updated_at,
+                datetime.strptime('2023-07-01T12:00:00.000000',
+                    "%Y-%m-%dT%H:%M:%S.%f"))

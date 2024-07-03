@@ -16,10 +16,8 @@ class BaseModel:
         """Initializes BaseModel instance"""
         if kwargs:
             for key, value in kwargs.items():
-                if (key not in self.EXPECTED_KEYS and
-                        key != "__class__" and
-                        key != "state_id"):
-                    raise KeyError(f'Unexpected key: {key}')
+                if key not in self.EXPECTED_KEYS and key != "__class__":
+                    setattr(self, key, value)
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
@@ -41,7 +39,7 @@ class BaseModel:
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """ updates'updated_at' with current datetime """
+        """ updates 'updated_at' with current datetime """
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
