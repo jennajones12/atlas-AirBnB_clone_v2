@@ -3,12 +3,12 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-from console import HBNBCommand
 from models.base_model import BaseModel
+from console import HBNBCommand
 from models import storage
 
-
 class TestHBNBCommand(unittest.TestCase):
+    
     def setUp(self):
         self.hbnb = HBNBCommand()
         self.mock_stdout = StringIO()
