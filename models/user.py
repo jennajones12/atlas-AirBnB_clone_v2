@@ -2,10 +2,10 @@
 """ User Module for HBNB project """
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 from models.place import Place
 
-class User(BaseModel, Base):
+class User(BaseModel):
     """ User class """
     __tablename__ = 'users'
     email = Column(String(128), nullable=False)
