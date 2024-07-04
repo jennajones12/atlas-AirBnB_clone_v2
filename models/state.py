@@ -1,18 +1,19 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
+"""State Module for HBNB project"""
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.city import City
 
 
-class State(BaseModel):
-    """ state class """
+class State(BaseModel, Base):
+    """State class representing states in a database."""
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    city_relation = relationship(
-         'City', cascade="all, delete", backref='state'
-         )
+    
+    cities = relationship(
+        'City', cascade="all, delete", backref='state'
+    )
 
     @property
     def cities(self):

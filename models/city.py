@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
+"""City Module for HBNB project"""
 from sqlalchemy import Column, String, ForeignKey
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 
-
-class City(BaseModel):
+class City(BaseModel, Base):
     """City class representing cities in a database."""
     __tablename__ = 'cities'
 
@@ -14,5 +13,4 @@ class City(BaseModel):
     def __init__(self, *args, **kwargs):
         """Initialize City object."""
         super().__init__(*args, **kwargs)
-        self.state_id = kwargs.get('state_id', "")
-        self.name = kwargs.get('name', "")
+
