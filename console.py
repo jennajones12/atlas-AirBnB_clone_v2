@@ -3,6 +3,7 @@
 
 import cmd
 import shlex
+import os
 from models import storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -163,4 +164,21 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
 if __name__ == '__main__':
+    # Fetching environment variables
+    mysql_user = os.getenv('HBNB_MYSQL_USER')
+    mysql_pwd = os.getenv('HBNB_MYSQL_PWD')
+    mysql_host = os.getenv('HBNB_MYSQL_HOST')
+    mysql_db = os.getenv('HBNB_MYSQL_DB')
+    storage_type = os.getenv('HBNB_TYPE_STORAGE')
+    hbnb_env = os.getenv('HBNB_ENV')
+
+    # Print environment variables for debugging
+    print(f"Using environment variables:")
+    print(f"HBNB_MYSQL_USER: {mysql_user}")
+    print(f"HBNB_MYSQL_PWD: {mysql_pwd}")
+    print(f"HBNB_MYSQL_HOST: {mysql_host}")
+    print(f"HBNB_MYSQL_DB: {mysql_db}")
+    print(f"HBNB_TYPE_STORAGE: {storage_type}")
+    print(f"HBNB_ENV: {hbnb_env}")
+
     HBNBCommand().cmdloop()
