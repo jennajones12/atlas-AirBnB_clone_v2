@@ -75,3 +75,16 @@ updates attributes of a user object based on its class name, ID, and a dictionar
 '*<class_name>.update(<_id>, <dictionary>)*'       
 #### Example:
     (hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
+
+# AirBnB Clone - Web Framework
+
+This project involves creating a web framework for an AirBnB clone using Flask.
+
+## 0. Hello Flask!
+
+This script starts a Flask web application that listens on 0.0.0.0, port 5000, and displays "Hello HBNB!" on the root route.
+
+To run the application:
+```bash
+python3 -m web_flask.0-hello_route
+
