@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" console """
+""" Console and Flask web application """
 
 import cmd
 from datetime import datetime
@@ -12,9 +12,12 @@ from models.review import Review
 from models.state import State
 from models.user import User
 import shlex
+from flask import Flask, render_template
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
+
+app = Flask(__name__)
 
 
 class HBNBCommand(cmd.Cmd):
@@ -46,27 +49,28 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     try:
                         value = int(value)
-                    except ValueError:
+                    except:
                         try:
                             value = float(value)
-                        except ValueError:
+                        except:
                             continue
                 new_dict[key] = value
         return new_dict
 
     def do_create(self, arg):
         """Creates a new instance of a class"""
-        args = shlex.split(arg)
+        args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
             return False
         if args[0] in classes:
             new_dict = self._key_value_parser(args[1:])
             instance = classes[args[0]](**new_dict)
-            print(instance.id)
-            instance.save()
         else:
             print("** class doesn't exist **")
+            return False
+        print(instance.id)
+        instance.save()
 
     def do_show(self, arg):
         """Prints an instance as a string based on the class and id"""
@@ -139,12 +143,12 @@ class HBNBCommand(cmd.Cmd):
                                 if args[2] in integers:
                                     try:
                                         args[3] = int(args[3])
-                                    except ValueError:
+                                    except:
                                         args[3] = 0
                                 elif args[2] in floats:
                                     try:
                                         args[3] = float(args[3])
-                                    except ValueError:
+                                    except:
                                         args[3] = 0.0
                             setattr(models.storage.all()[k], args[2], args[3])
                             models.storage.all()[k].save()
@@ -160,5 +164,50 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
 
-if __name__ == '__main__':
+# Flask application routes
+@app.route('/', strict_slashes=False)
+def hello_hbnb():
+    """ Displays 'Hello HBNB!' """
+    return "Hello HBNB!"
+
+
+@app.route('/hbnb', strict_slashes=False)
+def hbnb():
+    """ Displays 'HBNB' """
+    return "HBNB"
+
+
+@app.route('/c/<text>', strict_slashes=False)
+def c_is_fun(text):
+    """ Displays 'C' followed by the value of the text variable """
+    return "C {}".format(text.replace('_', ' '))
+
+
+@app.route('/python/', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_is_cool(text="is cool"):
+    """ Displays 'Python' followed by the value of the text variable """
+    return "Python {}".format(text.replace('_', ' '))
+
+
+@app.route('/number/<int:n>', strict_slashes=False)
+def is_number(n):
+    """ Displays 'n is a number' only if n is an integer """
+    return "{} is a number".format(n)
+
+
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template(n):
+    """ Displays a HTML page only if n is an integer """
+    return render_template('5-number.html', n=n)
+
+
+@app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
+def number_odd_or_even(n):
+    """ Displays a HTML page only if n is an integer """
+    return render_template('6-number_odd_or_even.html', n=n,
+                           type=("even" if n % 2 == 0 else "odd"))
+
+
+if __name__ == "__main__":
     HBNBCommand().cmdloop()
