@@ -9,6 +9,7 @@ import models
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     EXPECTED_KEYS = [
@@ -25,7 +26,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Initializes BaseModel instance"""
-        
+
         if kwargs:
             for key, value in kwargs.items():
                 if key not in self.EXPECTED_KEYS and key != "__class__":
@@ -69,5 +70,6 @@ class BaseModel:
     def delete(self):
         """Deletes the current instance from storage"""
         models.storage.delete(self)
+
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
