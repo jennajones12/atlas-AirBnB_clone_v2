@@ -41,20 +41,31 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query all objects or objects of a specific class"""
-        objs = {}
+        def all(self, cls=None):
+    """Query all objects or objects of a specific class"""
+    objs = {}
+
+    try:
         if cls:
+            # Query objects of a specific class
             results = self.__session.query(cls).all()
             for obj in results:
                 key = f"{cls.__name__}.{obj.id}"
                 objs[key] = obj
         else:
+            # Query all objects if cls is not provided
             for class_name in classes.values():
                 results = self.__session.query(class_name).all()
                 for obj in results:
                     key = f"{obj.__class__.__name__}.{obj.id}"
                     objs[key] = obj
-        return objs
+
+    except Exception as e:
+        # Handle any exceptions that occur during the query
+        print(f"Error in DB query: {e}")
+        objs = {}  # Return an empty dictionary or handle the error gracefully
+
+    return objs
 
     def new(self, obj):
         """Add object to the database"""
@@ -84,10 +95,10 @@ class DBStorage:
 
         if place is None:
             print(" ** Place not found ** ")
-            return False
+        return False
         if amenity is None:
             print(" ** Amenity not found ** ")
-            return False
+        return False
 
         if place and amenity:
             place.amenities.append(amenity)
@@ -95,18 +106,21 @@ class DBStorage:
             try:
                 self.__session.commit()
                 print(" ** Amenity and Place linked ** ")
-                return True
+            return True
+
             except exc.IntegrityError as e:
                 if 'Duplicate entry' in str(e.orig):
                     print(" ** Amenity and Place already linked ** ")
                 else:
                     print(e)
                 self.__session.rollback()
-                return False
+
+            return False
+
             except Exception as e:
                 print(e)
                 self.__session.rollback()
-                return False
+            return False
 
     def unlink_amenity(self, amenity_id, place_id):
         """ Remove an amenity from a place """
