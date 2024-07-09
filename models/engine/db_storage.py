@@ -30,7 +30,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-    """Initialize the database storage engine"""
+        """Initialize the database storage engine"""
     pass
 
     def all(self, cls=None):
