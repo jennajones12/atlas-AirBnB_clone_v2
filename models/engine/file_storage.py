@@ -1,6 +1,7 @@
 import json
 from models.base_model import BaseModel
 
+
 class FileStorage:
     """Manages storage of hbnb models in JSON format"""
     __file_path = "file.json"
@@ -34,7 +35,7 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-        
+
         classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
@@ -57,3 +58,6 @@ class FileStorage:
             if key in self.__objects:
                 del self.__objects[key]
 
+    def close(self):
+        """Calls reload() method for deserializing the JSON file to objects"""
+        self.reload()
