@@ -43,7 +43,7 @@ class DBStorage:
                 objs[key] = obj
         else:
             for class_ in classes:
-                results = self.__session.query(class ).all()
+                results = self.__session.query(class).all()
                 for obj in results:
                     key = f"{class_.__name__}.{obj.id}"
                     objs[key] = obj
