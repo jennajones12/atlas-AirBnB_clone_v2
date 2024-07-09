@@ -77,7 +77,7 @@ class DBStorage:
         self.__session = scoped_session(session_factory)()
 
         def link_amenity(self, amenity_id, place_id):
-        """ Add an amenity to a place """
+            """ Add an amenity to a place """
         place = amenity = None
         place = self.all('Place')['Place.' + place_id]
         amenity = self.all('Amenity')['Amenity.' + amenity_id]
