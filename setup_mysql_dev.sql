@@ -1,4 +1,3 @@
--- hbnb_dev_db
 -- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
@@ -11,14 +10,3 @@ GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
 -- Grant SELECT privilege on the performance_schema database to hbnb_dev
 GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
 
--- Use the hbnb_dev_db database
-USE hbnb_dev_db;
-
--- Create the states table
-CREATE TABLE IF NOT EXISTS states (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(128) NOT NULL,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
