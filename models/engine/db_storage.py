@@ -72,8 +72,76 @@ class DBStorage:
     def reload(self):
         """Reload data from the database"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)()
+
+        def link_amenity(self, amenity_id, place_id):
+        """ Add an amenity to a place """
+        place = amenity = None
+        place = self.all('Place')['Place.' + place_id]
+        amenity = self.all('Amenity')['Amenity.' + amenity_id]
+
+        if place is None:
+            print(" ** Place not found ** ")
+            return False
+        if amenity is None:
+            print(" ** Amenity not found ** ")
+            return False
+
+        if place and amenity:
+            place.amenities.append(amenity)
+            self.__session.add(place)
+            try:
+                self.__session.commit()
+                print(" ** Amenity and Place linked ** ")
+                return True
+            except exc.IntegrityError as e:
+                if 'Duplicate entry' in str(e.orig):
+                    print(" ** Amenity and Place already linked ** ")
+                else:
+                    print(e)
+                self.__session.rollback()
+                return False
+            except Exception as e:
+                print(e)
+                self.__session.rollback()
+                return False
+
+    def unlink_amenity(self, amenity_id, place_id):
+        """ Remove an amenity from a place """
+        place = amenity = None
+        place = self.all('Place')['Place.' + place_id]
+        amenity = self.all('Amenity')['Amenity.' + amenity_id]
+
+        if place is None:
+            print(" ** Place not found ** ")
+            return False
+        if amenity is None:
+            print(" ** Amenity not found ** ")
+            return False
+
+        if place and amenity:
+            if amenity in place.amenities:
+                place.amenities.remove(amenity)
+                self.__session.add(place)
+                try:
+                    self.__session.commit()
+                    print(" ** Amenity and Place unlinked ** ")
+                    return True
+                # Handle MySQLdb._exceptions.IntegrityError here
+
+                except self.__engine._exceptions.IntegrityError as e:
+                    print(e[1])
+                    self.__session.rollback()
+                    return False
+                except Exception as e:
+                    print(e)
+                    self.__session.rollback()
+                    return False
+            else:
+                print(" ** Amenity and Place not linked ** ")
+                return False
 
     def close(self):
         """Close the session"""
