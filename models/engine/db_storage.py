@@ -29,7 +29,7 @@ class DBStorage:
     __engine = None
     __session = None
 
-    def __init__(self)
+    def __init__(self):
     """Initialize the database storage engine"""
     pass
 
