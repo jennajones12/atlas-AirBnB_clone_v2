@@ -10,7 +10,7 @@ class State(BaseModel, Base):
     """State class representing states in a database."""
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    
+
     cities = relationship(
         'City', cascade="all, delete", backref='state'
     )

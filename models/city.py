@@ -3,6 +3,7 @@
 from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel, Base
 
+
 class City(BaseModel, Base):
     """City class representing cities in a database."""
     __tablename__ = 'cities'
@@ -13,4 +14,3 @@ class City(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """Initialize City object."""
         super().__init__(*args, **kwargs)
-

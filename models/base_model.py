@@ -8,6 +8,7 @@ import models
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     EXPECTED_KEYS = [

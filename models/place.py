@@ -1,23 +1,99 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
-from sqlalchemy import Column, String, ForeignKey
+""" Place Module for HBNB project """
+from models.base_model import BaseModel, Base, storage_type
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
-from models.place import Place
+from models import Amenity, City
 
-class City(BaseModel):
-    """City class representing cities in a database."""
-    __tablename__ = 'cities'
 
-    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-    name = Column(String(128), nullable=False)
+class Place(BaseModel, Base):
+    """ A place to stay """
+    __tablename__ = 'places'
 
-    places = relationship(
-        'Place', cascade="all, delete", backref='city'
-    )
+    if storage_type == 'db':
+        city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+        name = Column(String(128), nullable=False)
+        description = Column(String(1024), nullable=True)
+        number_rooms = Column(Integer, nullable=False, default=0)
+        number_bathrooms = Column(Integer, nullable=False, default=0)
+        max_guest = Column(Integer, nullable=False, default=0)
+        price_by_night = Column(Integer, nullable=False, default=0)
+        latitude = Column(Float, nullable=True)
+        longitude = Column(Float, nullable=True)
 
-    def __init__(self, *args, **kwargs):
-        """Initialize City object."""
-        super().__init__(*args, **kwargs)
-        self.state_id = kwargs.get('state_id', "")
-        self.name = kwargs.get('name', "")
+        reviews = relationship("Review", backref="place")
+        place_amenity = Table('place_amenity', Base.metadata,
+                              Column('place_id', String(60),
+                                     ForeignKey('places.id',
+                                                onupdate='CASCADE',
+                                                ondelete='CASCADE'),
+                                     primary_key=True,
+                                     nullable=False),
+                              Column('amenity_id', String(60),
+                                     ForeignKey('amenities.id',
+                                                onupdate='CASCADE',
+                                                ondelete='CASCADE'),
+                                     primary_key=True,
+                                     nullable=False))
+
+        amenities = relationship("Amenity",
+                                 secondary="place_amenity",
+                                 backref="place_amenities",
+                                 viewonly=False)
+
+    else:
+        city_id = ""
+        user_id = ""
+        name = ""
+        description = ""
+        number_rooms = 0
+        number_bathrooms = 0
+        max_guest = 0
+        price_by_night = 0
+        latitude = 0.0
+        longitude = 0.0
+
+        @property
+        def reviews(self):
+            """ Return a list of reviews """
+            from models import storage
+            from models.review import Review
+            review_list = []
+            all_reviews = storage.all(Review)
+            for review in all_reviews.values():
+                if str(review.place_id) == str(self.id):
+                    review_list.append(review)
+            return review_list
+
+        @property
+        def amenities(self):
+            """ Return a list of amenities """
+            from models import storage
+            amenity_list = []
+            for amenity in list(storage.all("Amenity").values()):
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, value):
+            """ Setter method for amenities """
+            if isinstance(value, Amenity):
+                self.amenity_ids.append(value.id)
+
+        @property
+        def cities(self):
+            """ Return a list of cities """
+            from models import storage
+            city_list = []
+            for city in list(storage.all("City").values()):
+                if city.id == self.city_id:
+                    city_list.append(city)
+            return city_list
+
+        @cities.setter
+        def cities(self, value):
+            """ Setter method for cities """
+            if isinstance(value, City):
+                self.city_id = value.id
