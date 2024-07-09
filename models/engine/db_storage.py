@@ -52,7 +52,7 @@ class DBStorage:
     def new(self, obj):
         """Add object to the database"""
         if obj not in self.__session:
-        self.__session.add(obj)
+            self.__session.add(obj)
 
     def save(self):
         """Commit changes to the database"""
