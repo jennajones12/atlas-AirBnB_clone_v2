@@ -3,9 +3,14 @@
 
 import models
 from models.base_model import BaseModel, Base
-from models import User, State, City, Amenity, Place, Review
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.user import User
 from os import getenv
-from sqlalchemy import create_engine, exc
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {
@@ -31,7 +36,9 @@ class DBStorage:
 
     def __init__(self):
         """Initialize the database storage engine"""
-    pass
+        self.__engine = create_engine(connection, pool_pre_ping=True)
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Query all objects or objects of a specific class"""
@@ -42,17 +49,16 @@ class DBStorage:
                 key = f"{cls.__name__}.{obj.id}"
                 objs[key] = obj
         else:
-            for class_ in classes:
-                results = self.__session.query(class_).all()
+            for class_name in classes.values():
+                results = self.__session.query(class_name).all()
                 for obj in results:
-                    key = f"{class_.__name__}.{obj.id}"
+                    key = f"{obj.__class__.__name__}.{obj.id}"
                     objs[key] = obj
-        return objects
+        return objs
 
     def new(self, obj):
         """Add object to the database"""
-        if obj not in self.__session:
-            self.__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """Commit changes to the database"""
@@ -60,32 +66,18 @@ class DBStorage:
 
     def delete(self, obj=None):
         """Delete object from the database"""
-        split_key = key.split(".")
-        class_name = split_key[0]
-        obj_id = split_key[1]
-        obj = {}
-        if class_name not in classes:
-            return
-        for o in self.all(class_name).items():
-            if o[1].id == obj_id:
-                obj = o[1]
-                break
-        if obj is None:
-            print(" ** object not found to delete ** ")
-            return
-        self.__session.delete(obj)
-        print(f"Deleted {key}")
+        if obj:
+            self.__session.delete(obj)
 
     def reload(self):
         """Reload data from the database"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
-        self.__session = scoped_session(session_factory)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(session_factory)()
 
     def close(self):
         """Close the session"""
-        self.__session.remove()
+        self.__session.close()
 
 
 storage = DBStorage()
