@@ -83,14 +83,17 @@ class DBStorage:
         print(f"Deleted {key}")
 
     def reload(self):
-        """ Create all tables in the database """
+    """Reload data from the database"""
+    from models.user import User
+    from models.place import Place
+    from models.state import State
+    from models.city import City
+    from models.amenity import Amenity
+    from models.review import Review
 
-        Base.metadata.create_all(self.__engine)
-        # Create a new session using sessionmaker
-        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-
-        # Use scoped_session to ensure thread-safety
-        self.__session = scoped_session(Session)()
+    Base.metadata.create_all(self.__engine)
+    session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+    self.__session = scoped_session(session_factory)()
 
     def link_amenity(self, amenity_id, place_id):
         """ Add an amenity to a place """
