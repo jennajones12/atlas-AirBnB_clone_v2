@@ -1,23 +1,21 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
-from sqlalchemy import Column, String, ForeignKey
+"""Place Module for HBNB project"""
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey, Integer, Float  # Import Float
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
-from models.place import Place
 
-class City(BaseModel):
-    """City class representing cities in a database."""
-    __tablename__ = 'cities'
 
-    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+class Place(BaseModel, Base):
+    """Place class representing places in a database."""
+    __tablename__ = 'places'
     name = Column(String(128), nullable=False)
-
-    places = relationship(
-        'Place', cascade="all, delete", backref='city'
-    )
-
-    def __init__(self, *args, **kwargs):
-        """Initialize City object."""
-        super().__init__(*args, **kwargs)
-        self.state_id = kwargs.get('state_id', "")
-        self.name = kwargs.get('name', "")
+    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+    description = Column(String(1024))
+    number_rooms = Column(Integer, default=0)
+    number_bathrooms = Column(Integer, default=0)
+    max_guest = Column(Integer, default=0)
+    price_by_night = Column(Integer, default=0)
+    latitude = Column(Float)  # Now Float is defined
+    longitude = Column(Float)
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)

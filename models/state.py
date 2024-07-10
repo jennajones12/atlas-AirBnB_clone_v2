@@ -1,23 +1,24 @@
 #!/usr/bin/python3
 """State Module for HBNB project"""
+from models.base_model import BaseModel, Base, storage_type
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel, Base
-from models.city import City
+from models.city import City  # Import the City class
 
 
 class State(BaseModel, Base):
-    """State class representing states in a database."""
+    """class representing states in a database."""
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    
-    cities = relationship(
-        'City', cascade="all, delete", backref='state'
-    )
+
+    if storage_type == 'db':
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="state")
+    else:
+        name = ""
 
     @property
     def cities(self):
-        """getter attribute that returns list of City instances"""
+        """getter that returns list of City instances"""
         from models import storage
         city_list = []
         for city in storage.all(City).values():

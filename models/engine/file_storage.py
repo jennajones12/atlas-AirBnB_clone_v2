@@ -1,5 +1,9 @@
+#!/usr/bin/python3
+"""Manages storage of hbnb models in JSON format"""
+
 import json
 from models.base_model import BaseModel
+
 
 class FileStorage:
     """Manages storage of hbnb models in JSON format"""
@@ -34,7 +38,7 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-        
+
         classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
@@ -46,7 +50,7 @@ class FileStorage:
                 for key, val in temp.items():
                     cls_name = val['__class__']
                     if cls_name in classes:
-                        self.__objects[key] = classes[cls_name](**val)
+                        self.__objects[key] = classescls_name
         except FileNotFoundError:
             pass
 
@@ -57,3 +61,9 @@ class FileStorage:
             if key in self.__objects:
                 del self.__objects[key]
 
+    def close(self):
+        """Call reload() method for deserializing the JSON file to objects"""
+        self.reload()
+
+
+storage = FileStorage()
