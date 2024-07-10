@@ -83,7 +83,7 @@ class DBStorage:
         print(f"Deleted {key}")
 
     def reload(self):
-    """Reload data from the database"""
+        """Reload data from the database"""
     from models.user import User
     from models.place import Place
     from models.state import State
