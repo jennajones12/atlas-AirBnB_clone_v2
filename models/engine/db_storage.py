@@ -43,31 +43,26 @@ class DBStorage:
     def all(self, cls=None):
         """Query all objects or objects of a specific class"""
         objs = {}
-
-        try:
-            if cls:
-                # Query objects of a specific class
-                results = self.__session.query(cls).all()
+        if cls:
+            # If class specified, query all objects of that class
+            results = self.__session.query(cls).all()
+            for obj in results:
+                key = f"{cls.__name__}.{obj.id}"
+                objs[key] = obj
+        else:
+            # If no class specified, query objects of all classes
+            classes = [User, State, City, Amenity, Place, Review]
+            for class_ in classes:
+                results = self.__session.query(class_).all()
                 for obj in results:
-                    key = f"{cls.__name__}.{obj.id}"
+                    key = f"{class_.__name__}.{obj.id}"
                     objs[key] = obj
-            else:
-                # Query all objects if cls is not provided
-                for class_name in classes.values():
-                    results = self.__session.query(class_name).all()
-                    for obj in results:
-                        key = f"{obj.__class__.__name__}.{obj.id}"
-                        objs[key] = obj
-
-        except Exception as e:
-            print(f"Error in DB query: {e}")
-            objs = {}
-
         return objs
 
     def new(self, obj):
         """Add object to the database"""
-        self.__session.add(obj)
+        if obj not in self.__session:
+            self.__session.add(obj)
 
     def save(self):
         """Commit changes to the database"""
