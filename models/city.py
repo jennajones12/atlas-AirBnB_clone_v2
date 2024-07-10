@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 
+
 class City(BaseModel, Base):
     """City class representing cities in a database."""
     __tablename__ = 'cities'
