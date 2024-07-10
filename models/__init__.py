@@ -11,14 +11,14 @@ from models.user import User
 out_format = "functional"
 
 classes = {
-           'BaseModel': BaseModel,
-           'User': User,
-           'Place': Place,
-           'State': State,
-           'City': City,
-           'Amenity': Amenity,
-           'Review': Review
-           }
+    'BaseModel': BaseModel,
+    'User': User,
+    'Place': Place,
+    'State': State,
+    'City': City,
+    'Amenity': Amenity,
+    'Review': Review
+}
 
 if storage_type == 'db':
     from models.engine.db_storage import DBStorage

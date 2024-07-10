@@ -23,12 +23,6 @@ host = getenv('HBNB_MYSQL_HOST')
 db_name = getenv('HBNB_MYSQL_DB')
 connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
-username = "hbnb_dev"
-password = "hbnb_dev_pwd"
-host = "localhost"
-db_name = "hbnb_dev_db"
-connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
-
 
 class DBStorage:
     """MySQL database via sqlalchemy"""
@@ -40,23 +34,25 @@ class DBStorage:
         pass
 
     def all(self, cls=None):
-        """Query all objects in the current database session"""
-        objs = {}
+        """ returns a dictionary of some things or all things """
+        all_dict = {}
         if cls:
-            # If class specified, query all objects of that class
-            results = self.__session.query(cls).all()
-            for obj in results:
-                key = f"{cls.__name__}.{obj.id}"
-                objs[key] = obj
+            if isinstance(cls, str):
+                cls = eval(cls)
+                for clases in [State, City, User, Place, Review, Amenity]:
+                    query = self.__session.query(clases)
+                    for elem in query:
+                        key = "{}.{}".format(type(elem).__name__, elem.id)
+                        if isinstance(elem, cls):
+                            all_dict[key] = elem
         else:
-            # If no class specified, query objects of all classes
-            classes = [User, State, City, Amenity, Place, Review]
-            for class_ in classes:
-                results = self.__session.query(class_).all()
-                for obj in results:
-                    key = f"{class_.__name__}.{obj.id}"
-                    objs[key] = obj
-        return objs
+            for clases in [State, City, User, Place, Review, Amenity]:
+                query = self.__session.query(clases)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    # del elem.__dict__["_sa_instance_state"]
+                    all_dict[key] = elem
+        return (all_dict)
 
     def new(self, obj):
         """ Add an object to the session """
@@ -87,12 +83,14 @@ class DBStorage:
         print(f"Deleted {key}")
 
     def reload(self):
-        """Create all tables in database"""
+        """ Create all tables in the database """
 
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
-        self.__session = scoped_session(session_factory)
+        # Create a new session using sessionmaker
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+
+        # Use scoped_session to ensure thread-safety
+        self.__session = scoped_session(Session)()
 
     def link_amenity(self, amenity_id, place_id):
         """ Add an amenity to a place """

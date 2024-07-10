@@ -1,13 +1,12 @@
 #!/usr/bin/python3
-"""State Module for HBNB project"""
+""" State Module for HBNB project """
 from models.base_model import BaseModel, Base, storage_type
-from sqlalchemy import Column, String
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
-from models.city import City  # Import the City class
 
 
 class State(BaseModel, Base):
-    """class representing states in a database."""
+    """ State class """
     __tablename__ = 'states'
 
     if storage_type == 'db':
@@ -16,12 +15,13 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """getter that returns list of City instances"""
-        from models import storage
-        city_list = []
-        for city in storage.all(City).values():
-            if city.state_id == self.id:
-                city_list.append(city)
-        return city_list
+        @property
+        def cities(self):
+            """list of cities in this state"""
+            from models import City, storage
+            city_list = []
+            all_cities = storage.all(City)
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    city_list.append(city)
+            return city_list

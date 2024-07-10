@@ -1,22 +1,26 @@
 #!/usr/bin/python3
-"""Place Module for HBNB project"""
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+""" Place Module for HBNB project """
+from models.base_model import BaseModel, Base, storage_type
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
+from models import Amenity, City
 
 
 class Place(BaseModel, Base):
-    """Place class representing places in a database."""
+    """ A place to stay """
     __tablename__ = 'places'
 
     if storage_type == 'db':
-        city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
-        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
-        description = Column(String(1024))
-        number_rooms = Column(Integer, default=0)
-        number_bathrooms = Column(Integer, default=0)
-        max_guest = Column(Integer, default=0)
-        price_by_night = Column(Integer, default=0)
+        city_id = Column(String(60),
+                         ForeignKey('cities.id'), nullable=False)
+        user_id = Column(String(60),
+                         ForeignKey('users.id'), nullable=False)
+        name = Column(String(128), nullable=False)
+        description = Column(String(1024), nullable=True)
+        number_rooms = Column(Integer, nullable=False, default=0)
+        number_bathrooms = Column(Integer, nullable=False, default=0)
+        max_guest = Column(Integer, nullable=False, default=0)
+        price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", backref="place")
@@ -37,6 +41,7 @@ class Place(BaseModel, Base):
                                  secondary="place_amenity",
                                  backref="place_amenities",
                                  viewonly=False)
+
     else:
         city_id = ""
         user_id = ""
@@ -54,9 +59,19 @@ class Place(BaseModel, Base):
         reviews = []
 
         @property
+        def reviews(self):
+            """return a list of reviews"""
+            from models.review import Review
+            review_list = []
+            all_reviews = models.storage.all(Review)
+            for review in all_reviews.values():
+                if str(review.place_id) == str(self.id):
+                    review_list.append(review)
+            return review_list
+
+        @property
         def amenities(self):
             """Get/set linked Amenities."""
-            from models import storage
             amenity_list = []
             for amenity in list(storage.all("Amenity").values()):
                 if amenity.id in self.amenity_ids:
@@ -71,7 +86,6 @@ class Place(BaseModel, Base):
         @property
         def cities(self):
             """Get/set linked Cities."""
-            from models import storage
             city_list = []
             for city in list(storage.all("City").values()):
                 if city.id == self.city_id:

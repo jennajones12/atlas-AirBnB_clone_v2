@@ -1,16 +1,18 @@
 #!/usr/bin/python3
-"""City Module for HBNB project"""
-from sqlalchemy import Column, String, ForeignKey
-from models.base_model import BaseModel, Base
+""" City Module for HBNB project """
+from models.base_model import BaseModel, Base, storage_type
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import relationship
+
 
 class City(BaseModel, Base):
-    """City class representing cities in a database."""
+    """ The city class, contains state ID and name """
     __tablename__ = 'cities'
 
-    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-    name = Column(String(128), nullable=False)
-
-    def __init__(self, *args, **kwargs):
-        """Initialize City object."""
-        super().__init__(*args, **kwargs)
-
+    if storage_type == 'db':
+        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+        name = Column(String(128), nullable=False)
+        places = relationship("Place", backref="cities")
+    else:
+        name = ""
+        state_id = ""

@@ -28,5 +28,6 @@ class test_City(test_basemodel):
         new = self.value(name="San Francisco")
         self.assertEqual(type(new.name), str)
 
+
 if __name__ == "__main__":
     unittest.main()

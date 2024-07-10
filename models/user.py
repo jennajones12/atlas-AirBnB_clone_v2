@@ -3,7 +3,6 @@
 from models.base_model import BaseModel, Base, storage_type
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
-from models.place import Place
 
 
 class User(BaseModel, Base):

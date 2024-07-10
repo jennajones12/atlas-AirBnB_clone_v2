@@ -23,6 +23,7 @@ classes = {
     "User": User
 }
 
+
 class HBNBCommand(cmd.Cmd):
     """ HBNB console class """
 
@@ -162,6 +163,7 @@ class HBNBCommand(cmd.Cmd):
             value = float(value)
         setattr(obj_dict[obj_key], args[2], value)
         storage.save()
+
 
 if __name__ == '__main__':
     # Fetching environment variables
