@@ -1,21 +1,26 @@
 #!/usr/bin/python3
-""" MySQL Database Storage """
+""" Database Storage module for the HBNB project """
 
 import models
 from models.base_model import BaseModel, Base
-from models import User, State, City, Amenity, Place, Review
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.user import User
+from models.place import Place
 from os import getenv
-from sqlalchemy import create_engine, exc
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {"Amenity": Amenity,
-           "City": City,
-           "Place": Place,
-           "Review": Review,
-           "State": State,
-           "User": User}
-
-""" Initialize the MySQL Database Storage """
+classes = {
+    'User': User,
+    'State': State,
+    'City': City,
+    'Amenity': Amenity,
+    'Place': Place,
+    'Review': Review
+}
 
 username = getenv('HBNB_MYSQL_USER')
 password = getenv('HBNB_MYSQL_PWD')
@@ -25,78 +30,73 @@ connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
 
 class DBStorage:
-    """MySQL database via sqlalchemy"""
-    __engine = create_engine(connection)
+    """Database storage engine for HBNB project"""
+    __engine = None
     __session = None
 
     def __init__(self):
-        """make a DBStorage object and connect to the database"""
-        pass
+        """Initialize the database storage engine"""
+        self.__engine = create_engine(connection, pool_pre_ping=True)
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ returns a dictionary of some things or all things """
-        all_dict = {}
-        if cls:
-            if isinstance(cls, str):
-                cls = eval(cls)
-                for clases in [State, City, User, Place, Review, Amenity]:
-                    query = self.__session.query(clases)
-                    for elem in query:
-                        key = "{}.{}".format(type(elem).__name__, elem.id)
-                        if isinstance(elem, cls):
-                            all_dict[key] = elem
-        else:
-            for clases in [State, City, User, Place, Review, Amenity]:
-                query = self.__session.query(clases)
-                for elem in query:
-                    key = "{}.{}".format(type(elem).__name__, elem.id)
-                    # del elem.__dict__["_sa_instance_state"]
-                    all_dict[key] = elem
-        return (all_dict)
+        """Query all objects or objects of a specific class"""
+        objs = {}
+
+        try:
+            if cls:
+                # Query objects of a specific class
+                results = self.__session.query(cls).all()
+                for obj in results:
+                    key = f"{cls.__name__}.{obj.id}"
+                    objs[key] = obj
+            else:
+                # Query all objects if cls is not provided
+                for class_name in classes.values():
+                    results = self.__session.query(class_name).all()
+                    for obj in results:
+                        key = f"{obj.__class__.__name__}.{obj.id}"
+                        objs[key] = obj
+
+        except Exception as e:
+            print(f"Error in DB query: {e}")
+            objs = {}
+
+        return objs
 
     def new(self, obj):
-        """ Add an object to the session """
-        # add the obj to the __session if it isn't already there
-        if obj not in self.__session:
-            self.__session.add(obj)
+        """Add object to the database"""
+        self.__session.add(obj)
 
     def save(self):
-        """ Commit changes to database """
+        """Commit changes to the database"""
         self.__session.commit()
 
-    def delete(self, key=None):
-        """ Delete an object from the current session """
-        split_key = key.split(".")
-        class_name = split_key[0]
-        obj_id = split_key[1]
-        obj = {}
-        if class_name not in classes:
-            return
-        for o in self.all(class_name).items():
-            if o[1].id == obj_id:
-                obj = o[1]
-                break
-        if obj is None:
-            print(" ** object not found to delete ** ")
-            return
-        self.__session.delete(obj)
-        print(f"Deleted {key}")
+    def delete(self, obj=None):
+        """Delete object from the database"""
+        if obj:
+            self.__session.delete(obj)
 
     def reload(self):
         """Reload data from the database"""
-    from models.user import User
-    from models.place import Place
-    from models.state import State
-    from models.city import City
-    from models.amenity import Amenity
-    from models.review import Review
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
 
-    Base.metadata.create_all(self.__engine)
-    session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-    self.__session = scoped_session(session_factory)()
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(session_factory)()
 
     def link_amenity(self, amenity_id, place_id):
         """ Add an amenity to a place """
+        from models.place import Place
+        from models.amenity import Amenity
+
         place = amenity = None
         place = self.all('Place')['Place.' + place_id]
         amenity = self.all('Amenity')['Amenity.' + amenity_id]
@@ -115,13 +115,16 @@ class DBStorage:
                 self.__session.commit()
                 print(" ** Amenity and Place linked ** ")
                 return True
+
             except exc.IntegrityError as e:
                 if 'Duplicate entry' in str(e.orig):
                     print(" ** Amenity and Place already linked ** ")
                 else:
                     print(e)
                 self.__session.rollback()
+
                 return False
+
             except Exception as e:
                 print(e)
                 self.__session.rollback()
@@ -129,6 +132,9 @@ class DBStorage:
 
     def unlink_amenity(self, amenity_id, place_id):
         """ Remove an amenity from a place """
+        from models.place import Place
+        from models.amenity import Amenity
+
         place = amenity = None
         place = self.all('Place')['Place.' + place_id]
         amenity = self.all('Amenity')['Amenity.' + amenity_id]
@@ -163,4 +169,8 @@ class DBStorage:
                 return False
 
     def close(self):
+        """Close the session"""
         self.__session.remove()
+
+
+storage = DBStorage()
