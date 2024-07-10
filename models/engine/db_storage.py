@@ -8,7 +8,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models.user import User
-from models.place import Place  # Import Place class
+from models.place import Place
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -18,7 +18,7 @@ classes = {
     'State': State,
     'City': City,
     'Amenity': Amenity,
-    'Place': Place,  # Now Place is defined
+    'Place': Place,
     'Review': Review
 }
 
@@ -52,7 +52,6 @@ class DBStorage:
                     key = f"{cls.__name__}.{obj.id}"
                     objs[key] = obj
             else:
-                # Query all objects if cls is not provided
                 for class_name in classes.values():
                     results = self.__session.query(class_name).all()
                     for obj in results:
@@ -60,11 +59,9 @@ class DBStorage:
                         objs[key] = obj
 
         except Exception as e:
-            # Handle any exceptions that occur during the query
             print(f"Error in DB query: {e}")
-            objs = {}  # Return an empty dictionary or handle the error gracefully
-
-        return objs
+            objs = {}
+            return objs
 
     def new(self, obj):
         """Add object to the database"""
@@ -148,7 +145,6 @@ class DBStorage:
                     self.__session.commit()
                     print(" ** Amenity and Place unlinked ** ")
                     return True
-                # Handle MySQLdb._exceptions.IntegrityError here
 
                 except self.__engine._exceptions.IntegrityError as e:
                     print(e[1])
