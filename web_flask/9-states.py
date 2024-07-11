@@ -68,12 +68,20 @@ def state(id=None):
     sorted_states = sorted(states, key=lambda state: state.name)
     state_obj = next(iter([s for s in states if s.id == id]), None)
     cities = storage.all(City).values()
-    sorted_cities = sorted([c for c in cities if c.state_id == id], key=lambda city: city.name) if id else None
+    sorted_cities = sorted([c for c in cities if c.state_id == id],
+                           key=lambda city: city.name) if id else None
 
     if not state_obj:
-        return render_template('9-states.html', states=sorted_states, error="Not found!")
+        return render_template(
+            '9-states.html',
+            states=sorted_states,
+            error="Not found!")
 
-    return render_template('9-states.html', states=sorted_states, cities=sorted_cities, state_name=state_obj.name)
+    return render_template(
+        '9-states.html',
+        states=sorted_states,
+        cities=sorted_cities,
+        state_name=state_obj.name)
 
 
 @app.teardown_appcontext
